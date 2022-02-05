@@ -43,7 +43,7 @@ def parse_msg(event):
         send_msg_tochat(vk_session, event.chat_id, weather()[0])
     if msg_text == '/аниме':
         send_msg_tochat(vk_session, event.chat_id, get_top())
-    if msg_text == '/f':
+    if msg_text == '/день':
         send_msg_tochat(vk_session, event.chat_id, info_for_the_day())
 
 
