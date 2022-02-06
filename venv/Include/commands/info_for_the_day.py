@@ -9,8 +9,7 @@ from commands.how_week import how_week
 
 def info_for_the_day(tomorrow = False):
     offset = datetime.timedelta(hours=4)
-    datetime.timezone(offset=offset)
-    now_date_izh = datetime.datetime.now(datetime.timezone.utc) + offset
+    now_date_izh = datetime.datetime.utcnow() + offset
 
     if tomorrow:
         timedelta = datetime.timedelta(days=1)

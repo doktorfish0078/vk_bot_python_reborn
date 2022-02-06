@@ -62,11 +62,12 @@ def send_msg_tochat(vk_session, chat_id, message):
 def wait_time():
     print("wait timer started")
     offset = datetime.timedelta(hours=4)
-    datetime.timezone(offset=offset)
-    now_date_izh = datetime.datetime.now(datetime.timezone.utc) + offset
+    now_date_izh = datetime.datetime.utcnow() + offset
     
     list_ids_chats_for_spam = [5]
     while True:
+        print(datetime.datetime.utcnow())
+        print(now_date_izh.now())
         if(now_date_izh.now().hour == 8 and now_date_izh.now().minute == 0):
             for id in list_ids_chats_for_spam:
                 send_msg_tochat(vk_session, id, info_for_the_day())
