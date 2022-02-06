@@ -9,13 +9,16 @@ import os
 import re
 
 
+"""
+В общем, для того, чтобы работал phantomJS на хостинге хероку необходимо следующее:
+1) driver = webdriver.PhantomJS()  - не указывать ex_path
+2) в heroku добавить билдпак http://github.com/stomita/heroku-buildpack-phantomjs.git
+"""
 def get_byte_screen_schedule_bus(text_msg):
     """
     :param text_msg:
     :return: Возвращает бинарный вид png скриншота
     """
-    print(os.environ.get('PATH', None))
-    path_phantomjs = os.environ.get('PATH', None)
     URL = "https://igis.ru/gortrans/bus/izh/"  # izh/номер автобуса
     numb_bus = get_numb_bus(text_msg)
     if numb_bus is None or not(2 <= int(numb_bus) <= 400):
@@ -25,8 +28,6 @@ def get_byte_screen_schedule_bus(text_msg):
 
 
     try:
-        # driver = webdriver.PhantomJS(executable_path=path_phantomjs)
-        # driver = webdriver.PhantomJS( path_phantomjs if path_phantomjs else '{}\commands\phantomjs.exe'.format(sys.path[0]))
         driver = webdriver.PhantomJS()
         driver.set_window_size(1600, 2070)
         driver.get(URL)

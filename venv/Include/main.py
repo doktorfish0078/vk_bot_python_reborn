@@ -21,10 +21,10 @@ group_id = '198707501'
 def main():
     global vk_session
     global vk_api
-    vk_session = VkApi(token=token)
-    longpoll = VkBotLongPoll(vk_session, group_id, wait=10)
-    vk_api = vk_session.get_api()
     try:
+        vk_session = VkApi(token=token)
+        longpoll = MyVkLongPoll(vk_session, group_id, wait=10)
+        vk_api = vk_session.get_api()
         while True:
             print('Bot started')
             for event in longpoll.listen():
@@ -36,8 +36,9 @@ def main():
                     elif event.message['attachments'] and event.message['attachments'][0]['type'] == 'audio_message':
                             pass
 
-    except BaseException as error:
-        print(error)
+    except requests.exceptions.ReadTimeout:
+        print("\n Переподключение к серверам ВК \n")
+        time.sleep(3)
 
 
 def parse_msg(event):
@@ -88,6 +89,15 @@ def wait_time():
                 send_msg_tochat(vk_session, id, info_for_the_day(tomorrow=True))
         time.sleep(60)
 
+
+class MyVkLongPoll(VkBotLongPoll):
+    def listen(self):
+        while True:
+            try:
+                for event in self.check():
+                    yield event
+            except Exception as e:
+                print('error', e)
 
 if __name__ == '__main__':
     listener_thread = threading.Thread(target=main)
