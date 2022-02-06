@@ -61,17 +61,14 @@ def send_msg_tochat(vk_session, chat_id, message):
 
 def wait_time():
     print("wait timer started")
-    offset = datetime.timedelta(hours=4)
-    now_date_izh = datetime.datetime.utcnow() + offset
-    
     list_ids_chats_for_spam = [5]
     while True:
-        print(datetime.datetime.utcnow())
-        print(now_date_izh.now())
-        if(now_date_izh.now().hour == 8 and now_date_izh.now().minute == 0):
+        izhevsk_utc_date = datetime.datetime.utcnow() + datetime.timedelta(hours=4)
+        print(izhevsk_utc_date)
+        if(izhevsk_utc_date.hour == 8 and izhevsk_utc_date.minute == 0):
             for id in list_ids_chats_for_spam:
                 send_msg_tochat(vk_session, id, info_for_the_day())
-        elif(now_date_izh.now().hour == 20 and now_date_izh.now().minute == 0):
+        elif(izhevsk_utc_date.hour == 20 and izhevsk_utc_date.minute == 0):
             for id in list_ids_chats_for_spam:
                 send_msg_tochat(vk_session, id, info_for_the_day(tomorrow=True))
         time.sleep(60)
