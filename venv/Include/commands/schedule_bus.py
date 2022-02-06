@@ -26,7 +26,8 @@ def get_byte_screen_schedule_bus(text_msg):
 
     try:
         # driver = webdriver.PhantomJS(executable_path=path_phantomjs)
-        driver = webdriver.PhantomJS( path_phantomjs if path_phantomjs else '{}\commands\phantomjs.exe'.format(sys.path[0]))
+        # driver = webdriver.PhantomJS( path_phantomjs if path_phantomjs else '{}\commands\phantomjs.exe'.format(sys.path[0]))
+        driver = webdriver.PhantomJS()
         driver.set_window_size(1600, 2070)
         driver.get(URL)
         elem = driver.find_element_by_class_name("table-st1")  # находим нужный нам элемент
