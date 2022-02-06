@@ -14,7 +14,7 @@ def get_byte_screen_schedule_bus(text_msg):
     :param text_msg:
     :return: Возвращает бинарный вид png скриншота
     """
-    path_phantomjs = os.environ.get('PATH_PHANTOMJS_BIN', None)
+    path_phantomjs = os.environ.get('PATH', None)
     URL = "https://igis.ru/gortrans/bus/izh/"  # izh/номер автобуса
     numb_bus = get_numb_bus(text_msg)
     if numb_bus is None or not(2 <= int(numb_bus) <= 400):
@@ -25,7 +25,7 @@ def get_byte_screen_schedule_bus(text_msg):
 
     try:
         # driver = webdriver.PhantomJS(executable_path=path_phantomjs)
-        driver = webdriver.PhantomJS('{}\commands\phantomjs.exe'.format(sys.path[0]))
+        driver = webdriver.PhantomJS( path_phantomjs if path_phantomjs else '{}\commands\phantomjs.exe'.format(sys.path[0]))
         driver.set_window_size(1600, 2070)
         driver.get(URL)
         elem = driver.find_element_by_class_name("table-st1")  # находим нужный нам элемент
