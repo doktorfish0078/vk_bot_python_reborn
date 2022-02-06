@@ -8,12 +8,10 @@ from commands.weather import weather
 from commands.how_week import how_week
 
 def info_for_the_day(tomorrow = False):
-    offset = datetime.timedelta(hours=4)
-    now_date_izh = datetime.datetime.utcnow() + offset
+    izhevsk_utc_date = datetime.datetime.utcnow() + datetime.timedelta(hours=4)
 
     if tomorrow:
         timedelta = datetime.timedelta(days=1)
-        return "📅Завтра {0}📅,\n{1},\n{2}".format(now_date_izh.date() + timedelta, how_week(tomorrow=True), weather(tomorrow=True)[0])
+        return "📅Завтра {0}📅,\n{1},\n{2}".format(izhevsk_utc_date.date() + timedelta, how_week(tomorrow=True), weather(tomorrow=True)[0])
     else:
-        return "📅Сегодня {0}📅,\n{1},\n{2}".format(now_date_izh.date(), how_week(), weather()[0])
-
+        return "📅Сегодня {0}📅,\n{1},\n{2}".format(izhevsk_utc_date.date(), how_week(), weather()[0])
