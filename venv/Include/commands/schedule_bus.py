@@ -14,6 +14,7 @@ def get_byte_screen_schedule_bus(text_msg):
     :param text_msg:
     :return: Возвращает бинарный вид png скриншота
     """
+    print(os.environ.get('PATH', None))
     path_phantomjs = os.environ.get('PATH', None)
     URL = "https://igis.ru/gortrans/bus/izh/"  # izh/номер автобуса
     numb_bus = get_numb_bus(text_msg)
@@ -51,7 +52,6 @@ def get_numb_bus(text_msg):
     :param text_msg: Подаётся в низком регистре и только если есть в наличии слова "автобус" или "автобуса"
     :return: Цифру автобуса,если она есть. Если нет,возвращает None
     """
-    print(text_msg)
     words = re.split("[, \-!?:]+", text_msg)
     try:
         if "автобус" in words:
