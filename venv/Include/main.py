@@ -9,11 +9,14 @@ from vk_api import VkApi
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 from random import randint
 
+from commands.welcome import welcome_msg
 from commands.weather import weather
 from commands.animes import get_top
+from commands.how_week import how_week
 from commands.info_for_the_day import info_for_the_day
 from commands.schedule_bus import get_byte_screen_schedule_bus
 from commands.upload_bin_img_on_vk import get_attachment
+from commands.help_faq import help_faq
 
 token = 'e94dbd6b9db4af4afd0cde9f0f7be84922aa1d01a34734a533a878650f493d596459b2d87cef2c7128110'
 group_id = '198707501'
@@ -28,7 +31,6 @@ def main():
         while True:
             print('Bot started')
             for event in longpoll.listen():
-
                 if event.type == VkBotEventType.MESSAGE_NEW and event.from_chat:
                     sender_id = event.message['from_id']
                     if event.message['text'][0] == '/':
@@ -43,15 +45,27 @@ def main():
 
 def parse_msg(event):
     msg_text = event.message['text'].lower()
-    words_message = re.split("[, \-!?:]+", msg_text[1:])
-    request = words_message[0]
+    words_message = re.split("[, \-!?:]+", msg_text[1:])  #all words[] without first char /
+    request = words_message[0]  # first word atref /
+    if request in ['help','помощь']:
+        send_msg_tochat(event.chat_id, help_faq())
+    elif request in ['погода']:
+        if 'завтра' in words_message:
+            send_msg_tochat(event.chat_id, weather(tomorrow=True)[0])
+        elif 'неделю' in words_message:
+            send_msg_tochat(event.chat_id, weather(week=True)[0])
+        else:
+            send_msg_tochat(event.chat_id, weather()[0])
 
-    if request in ['погода']:
-        send_msg_tochat(event.chat_id, weather()[0])
-    elif request in ['аниме']:
-        send_msg_tochat(event.chat_id, get_top())
-    elif request in ['день']:
-        send_msg_tochat(event.chat_id, info_for_the_day())
+    elif request in ['неделя']:
+        if 'завтра' in words_message:
+            send_msg_tochat(event.chat_id, how_week(tomorrow=True))
+        else:
+            send_msg_tochat(event.chat_id, how_week())
+
+    # elif request in ['день']:
+    #     send_msg_tochat(event.chat_id, info_for_the_day())
+
     elif request in ['автобус']:
         send_msg_tochat(event.chat_id, message="Ищем расписание вашего автобуса, ожидайте...")
         byte_screen = get_byte_screen_schedule_bus(msg_text[1:])
@@ -78,15 +92,16 @@ def send_msg_tochat(chat_id, message=None, attachment=None):
 
 def wait_time():
     print("wait timer started")
-    list_ids_chats_for_spam = [5]
+    list_ids_chats_for_spam = [2,5]
+    # send_msg_tochat(2, welcome_msg())
     while True:
         izhevsk_utc_date = datetime.datetime.utcnow() + datetime.timedelta(hours=4)
         if(izhevsk_utc_date.hour == 8 and izhevsk_utc_date.minute == 0):
             for id in list_ids_chats_for_spam:
-                send_msg_tochat(vk_session, id, info_for_the_day())
+                send_msg_tochat(id, info_for_the_day())
         elif(izhevsk_utc_date.hour == 20 and izhevsk_utc_date.minute == 0):
             for id in list_ids_chats_for_spam:
-                send_msg_tochat(vk_session, id, info_for_the_day(tomorrow=True))
+                send_msg_tochat(id, info_for_the_day(tomorrow=True))
         time.sleep(60)
 
 
@@ -104,4 +119,5 @@ if __name__ == '__main__':
     waiter_thread = threading.Thread(target=wait_time)
 
     listener_thread.start()
+    time.sleep(5)
     waiter_thread.start()
