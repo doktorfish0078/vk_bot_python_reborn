@@ -36,10 +36,11 @@ def main():
             for event in longpoll.listen():
                 if event.type == VkBotEventType.MESSAGE_NEW and event.from_chat:
                     sender_id = event.message['from_id']
-                    if event.message['text'][0] == '/':
-                        parse_msg(event)
-                    elif event.message['attachments'] and event.message['attachments'][0]['type'] == 'audio_message':
-                            pass
+                    if not event.message['text'] is None:
+                        if event.message['text'][0] == '/':
+                            parse_msg(event)
+                        elif event.message['attachments'] and event.message['attachments'][0]['type'] == 'audio_message':
+                                pass
 
     except requests.exceptions.ReadTimeout:
         print("\n Переподключение к серверам ВК \n")
@@ -85,6 +86,8 @@ def parse_msg(event):
                                          event=event,
                                          words_message=words_message))
     elif request in ['punish', 'наказать', "наказание"]:
+        print(words_message)
+        print(event)
         if len(words_message) > 1:
             send_msg_tochat(event.chat_id, punish(vk_api=vk_api,
                                                   event=event,
