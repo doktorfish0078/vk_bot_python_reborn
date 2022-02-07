@@ -10,8 +10,8 @@ def skirmish(vk_api, event, words_message, gm=False):
 
             if not gm:
                 roll = random.randint(0, 1)
-            # if player1['id'] == player2['id']:
-            #     return 'Нельзя в себя стрелять, а то зароскомнадзоришься'
+            if player1['id'] == player2['id']:
+                return 'Нельзя в себя стрелять, а то зароскомнадзоришься'
             if roll == 0:
                 return ('Победитель, палучаица, @id{0}({1})'.format(player1['id'], player1['first_name']))
             else:
