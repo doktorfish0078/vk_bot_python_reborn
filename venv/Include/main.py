@@ -17,6 +17,7 @@ from commands.info_for_the_day import info_for_the_day
 from commands.schedule_bus import get_byte_screen_schedule_bus
 from commands.upload_bin_img_on_vk import get_attachment
 from commands.help_faq import help_faq
+from commands.skirmish import skirmish
 
 token = 'e94dbd6b9db4af4afd0cde9f0f7be84922aa1d01a34734a533a878650f493d596459b2d87cef2c7128110'
 group_id = '198707501'
@@ -75,6 +76,13 @@ def parse_msg(event):
                 send_msg_tochat(event.chat_id, attachment=attachment)
         else:
             send_msg_tochat(event.chat_id, message='Не получилось получить информацию о вашем автобусе, не расстраивайтесь :)')
+            
+    elif request in ['skirmish', 'перестрелка', "🔫", 'bang', 'маслина']:
+        send_msg_tochat(event.chat_id,
+                        message=skirmish(vk_api=vk_api,
+                                         event=event, 
+                                         words_message=words_message))
+            
     else:
         send_msg_tochat(event.chat_id,
                         message='Такой команды не найдено :( Попробуйте на писать /help для того, чтобы ознакомится со списком команд')
