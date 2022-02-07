@@ -75,6 +75,9 @@ def parse_msg(event):
                 send_msg_tochat(event.chat_id, attachment=attachment)
         else:
             send_msg_tochat(event.chat_id, message='Не получилось получить информацию о вашем автобусе, не расстраивайтесь :)')
+    else:
+        send_msg_tochat(event.chat_id,
+                        message='Такой команды не найдено :( Попробуйте на писать /help для того, чтобы ознакомится со списком команд')
 
 
 
