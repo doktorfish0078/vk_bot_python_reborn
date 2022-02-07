@@ -4,6 +4,7 @@ import threading
 import datetime
 import time
 import re
+import requests
 
 from vk_api import VkApi
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
