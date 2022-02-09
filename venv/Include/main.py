@@ -37,7 +37,7 @@ def main():
             for event in longpoll.listen():
                 if event.type == VkBotEventType.MESSAGE_NEW and event.from_chat:
                     sender_id = event.message['from_id']
-                    if not event.message['text'] is None:
+                    if event.message['text'] != '':
                         if event.message['text'][0] == '/':
                             parse_msg(event)
                         elif event.message['attachments'] and event.message['attachments'][0]['type'] == 'audio_message':
