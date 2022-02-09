@@ -96,7 +96,7 @@ def parse_msg(event):
                             )
     elif request in ['пара', 'похуй', 'couple']:
         if len(words_message) == 1:
-            send_msg_tochat(event.chat_id, couple())
+            send_msg_tochat(event.chat_id, couple(how_week(boolean = True)))
 
     else:
         send_msg_tochat(event.chat_id,
