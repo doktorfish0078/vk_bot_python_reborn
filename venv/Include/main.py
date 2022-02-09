@@ -20,7 +20,7 @@ from commands.upload_bin_img_on_vk import get_attachment
 from commands.help_faq import help_faq
 from commands.skirmish import skirmish
 from commands.punish import punish
-# from commands.couple import couple
+from commands.couple import couple
 
 token = 'e94dbd6b9db4af4afd0cde9f0f7be84922aa1d01a34734a533a878650f493d596459b2d87cef2c7128110'
 group_id = '198707501'
@@ -94,9 +94,9 @@ def parse_msg(event):
                                                   event=event,
                                                   words_message=words_message)
                             )
-    # elif request in ['пара', 'похуй', 'couple']:
-    #     if len(words_message) == 1:
-    #         send_msg_tochat(event.chat_id, couple())
+    elif request in ['пара', 'похуй', 'couple']:
+        if len(words_message) == 1:
+            send_msg_tochat(event.chat_id, couple())
 
     else:
         send_msg_tochat(event.chat_id,
