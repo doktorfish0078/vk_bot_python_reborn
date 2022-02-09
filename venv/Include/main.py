@@ -21,6 +21,8 @@ from commands.help_faq import help_faq
 from commands.skirmish import skirmish
 from commands.punish import punish
 from commands.couple import couple
+from commands.get_courses import get_courses
+from commands.get_zoom_links import get_zoom_links
 
 token = 'e94dbd6b9db4af4afd0cde9f0f7be84922aa1d01a34734a533a878650f493d596459b2d87cef2c7128110'
 group_id = '198707501'
@@ -96,7 +98,13 @@ def parse_msg(event):
                             )
     elif request in ['пара', 'похуй', 'couple']:
         if len(words_message) == 1:
-            send_msg_tochat(event.chat_id, couple(how_week(boolean = True)))
+            send_msg_tochat(event.chat_id, message=couple(how_week(boolean = True)))
+
+    elif request in ['ссылки']:
+        send_msg_tochat(event.chat_id, message=get_zoom_links())
+
+    elif request in ['курсы']:
+        send_msg_tochat(event.chat_id, message=get_courses())
 
     else:
         send_msg_tochat(event.chat_id,
