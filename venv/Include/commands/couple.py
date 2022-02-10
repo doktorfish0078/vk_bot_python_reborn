@@ -31,14 +31,18 @@ def couple(how_week):
 
     times = [to_minutes(8, 30), to_minutes(10, 0), to_minutes(11, 40), to_minutes(12, 20), to_minutes(13, 50), to_minutes(15, 30), to_minutes(17, 10), to_minutes(18, 50)]
 
-    for i in range(len(times) - 1):
-        buf = check_couple(curr_time, times[i], times[i + 1], i + 1)
-        if buf:
-            shed = schedule()
-            j = 0 if how_week else 1
-            while j < len(shed):
-                if shed[j].get('Pair') == str(i + 1):
-                    buf += ('\n' + (shed[j].get('Info') if not (shed[j].get('Info') is None) else 'Пар по расписанию нету :)'))
-                    return buf
-                j += 2
-    return 'Какая бля пара, дура4ёк?)?)?)? Пар нет, универ адыхает, иди домой.'
+    try:
+        for i in range(len(times) - 1):
+            buf = check_couple(curr_time, times[i], times[i + 1], i + 1)
+            if buf:
+                shed = schedule()
+                j = 0 if how_week else 1
+                while j < len(shed):
+                    if shed[j].get('Pair') == str(i + 1):
+                        buf += ('\n' + (shed[j].get('Info') if not (shed[j].get('Info') is None) else 'Пар по расписанию нету :)'))
+                        return buf
+                    j += 2
+        return 'Какая бля пара, дура4ёк?)?)?)? Пар нет, универ адыхает, иди домой.'
+    except BaseException as error:
+        print(error)
+        return 'Сломалася я:('
