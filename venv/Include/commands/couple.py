@@ -42,7 +42,7 @@ def couple(how_week):
                 j = 0 if how_week else 1
                 while j < len(shed):
                     if (shed[j].get('Pair') == str(ibuf)) and (shed[j].get('Day') == curr_day):
-                        info = (shed[j].get('Info') if not (shed[j].get('Info') is None) else 'Пар по расписанию нету :)')
+                        info = (shed[j].get('Info') if not (shed[j].get('Info') is None) else '\nПар по расписанию нету :)')
                         buf += ('\n' + info[4:] if info[0]=='(' else info)
                         if j + 2 < len(shed):
                             if (shed[j + 2].get('Pair') == str(ibuf + 1)) and not (shed[j + 2].get('Info') is None):
