@@ -37,6 +37,23 @@ def main():
         while True:
             print('Bot started')
             for event in longpoll.listen():
+
+                #valentine
+                if event.type == VkBotEventType.MESSAGE_NEW and (not event.from_group and not event.from_chat ):
+                    text = event.message['text']
+                    splt = text.split(' ')
+                    try :
+                        if (splt[0] == 'валентинка') or (splt[0] == 'valentine'):
+                            target_id_or_name = (splt[1]).split('vk.com/')[1]
+                            target_id = vk_api.users.get(user_ids = target_id_or_name, fields = 'city')[0]['id']
+                            # print(target_id)
+                            attachs = [str(i['type'])+str(i[i['type']]['owner_id'])+'_'+str(i[i['type']]['id']) for i in  event.message['attachments']]
+                            # print(','.join(attachs))
+                            vk_api.messages.send(user_id= target_id, attachment = ','.join(attachs), message= ' '.join(splt[2:]), random_id= randint(0, 2048))
+                    except BaseException as error:
+                        print(error)
+                        vk_api.messages.send(user_id= event.message['from_id'], message= 'Иди нахуй клоун', random_id= randint(0, 2048))
+
                 if event.type == VkBotEventType.MESSAGE_NEW and event.from_chat:
                     sender_id = event.message['from_id']
                     if event.message['text'] != '':
