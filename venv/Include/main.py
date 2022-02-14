@@ -47,9 +47,9 @@ def main():
                             author = 'Валентино4ка от vk.com/id' + str(event.message.from_id) + '\n'
                             target_id_or_name = (splt[1]).split('vk.com/')[1]
                             target_id = vk_api.users.get(user_ids = target_id_or_name, fields = 'city')[0]['id']
-                            print(target_id)
+                            # print(target_id)
                             attachs = [str(i['type'])+str(i[i['type']]['owner_id'])+'_'+str(i[i['type']]['id'])+('_'+str(i[i['type']]['access_key']) if 'access_key' in i[i['type']] else '' ) for i in  event.message['attachments']]
-                            print(event)
+                            # print(event)
                             vk_api.messages.send(user_id= target_id, attachment = ','.join(attachs), message= author+' '.join(splt[2:]), random_id= randint(0, 2048))
                     except BaseException as error:
                         print(error)
