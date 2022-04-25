@@ -31,7 +31,7 @@ def weather(tomorrow=False, week=False):
     try:
         html_text = requests.get('https://yandex.ru/pogoda/izhevsk/details?via=ms').text
         soup = BeautifulSoup(html_text, features="html.parser")
-        weather_soup = soup.find_all('div', {'class', 'card'})
+        weather_soup = soup.find_all('article', {'class', 'card'})
 
         result_weather = ['Погода на {}:\n'.format(day), '']
 
@@ -56,6 +56,9 @@ def weather(tomorrow=False, week=False):
             result_weather[0] += '\n'
         return result_weather
 
-    except BaseException:
-        print("Error weather")
+    except BaseException as error:
+        print(error)
         return ("Не удалось получить погоду :(", "Err")
+
+
+print(weather())
