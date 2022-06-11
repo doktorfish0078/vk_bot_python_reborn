@@ -52,7 +52,8 @@ def weather(tomorrow=False, week=False):
             for day in range(len(time_day)):
                 result_weather[0] += "{0} {1}°С, {2}{3}, ощущается как {4}°С\n".format(
                     time_day[day], temp[day].text, weather_condition[day].text,
-                    weather_type[weather_condition[day].text], temp_feels_like[day].text)
+                    weather_type[weather_condition[day].text], temp_feels_like[day].find('span', {'class', 'temp__value temp__value_with-unit'}).text
+                )
             result_weather[0] += '\n'
         return result_weather
 
