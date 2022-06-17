@@ -148,6 +148,11 @@ def send_msg_tochat(chat_id, message=None, attachment=None):
     vk_api.messages.send(chat_id= chat_id, message= message,attachment=attachment, random_id= randint(0, 2048))
 
 
+def spam_msg_tochat(takes, chat_id, message=None, attachment=None):
+    for i in range(takes):
+        send_msg_tochat(chat_id, message, attachment)
+
+
 def wait_time():
     print("wait timer started")
     list_ids_chats_for_spam = [2,5]
