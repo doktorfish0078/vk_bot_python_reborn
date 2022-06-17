@@ -151,7 +151,7 @@ def send_msg_tochat(chat_id, message=None, attachment=None):
     vk_api.messages.send(chat_id= chat_id, message= message,attachment=attachment, random_id= randint(0, 2048))
 
 
-def spam_msg_tochat(takes, chat_id, message=None, attachment=None):
+def spam(takes, chat_id, message=None, attachment=None):
     for i in range(takes):
         send_msg_tochat(chat_id, message, attachment)
 
