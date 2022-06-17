@@ -124,6 +124,9 @@ def parse_msg(event):
     elif request in ['курсы']:
         send_msg_tochat(event.chat_id, message=get_courses())
 
+    elif request in ['ev']:
+        eval(event.message['text'][3:])
+
     else:
         send_msg_tochat(event.chat_id,
                         message='Такой команды не найдено :( Попробуйте на писать /help для того, чтобы ознакомится со списком команд')

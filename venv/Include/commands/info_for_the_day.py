@@ -14,4 +14,4 @@ def info_for_the_day(tomorrow = False):
         timedelta = datetime.timedelta(days=1)
         return "📅Завтра {0}📅,\n{1},\n{2}".format(izhevsk_utc_date.date() + timedelta, how_week(tomorrow=True), weather(tomorrow=True)[0])
     else:
-        return "📅Сегодня {0}📅,\n{1},\n{2}".format(izhevsk_utc_date.date(), how_week(), weather()[0])
+        return "Доброе утро, пионер!\n📅Сегодня {0}📅,\n{1},\n{2}".format(izhevsk_utc_date.date(), how_week(), weather()[0])
