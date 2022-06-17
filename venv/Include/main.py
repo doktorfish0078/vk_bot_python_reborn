@@ -125,10 +125,13 @@ def parse_msg(event):
         send_msg_tochat(event.chat_id, message=get_courses())
 
     elif request in ['ev']:
-        try:
-            eval(event.message['text'][3:])
-        except Exception as e:
-            send_msg_tochat(event.chat_id, "хуйню написал подмойся: "+str(e))
+        if event.message.from_id not in [135224919, 169026012]:
+            send_msg_tochat(event.chat_id, "не(")
+        else:
+            try:
+                eval(event.message['text'][3:])
+            except Exception as e:
+                send_msg_tochat(event.chat_id, "хуйню написал подмойся: "+str(e))
 
     else:
         send_msg_tochat(event.chat_id,
