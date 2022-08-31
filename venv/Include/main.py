@@ -23,6 +23,7 @@ from commands.punish import punish
 from commands.couple import couple
 from commands.get_courses import get_courses
 from commands.get_zoom_links import get_zoom_links
+from commands.info_about_lesson import info_about_lessons
 
 token = 'e94dbd6b9db4af4afd0cde9f0f7be84922aa1d01a34734a533a878650f493d596459b2d87cef2c7128110'
 group_id = '198707501'
@@ -39,21 +40,21 @@ def main():
             for event in longpoll.listen():
 
                 #valentine
-                if event.type == VkBotEventType.MESSAGE_NEW and (not event.from_group and not event.from_chat ):
-                    text = event.message['text']
-                    splt = text.split(' ')
-                    try :
-                        if (splt[0] == 'валентинка') or (splt[0] == 'valentine'):
-                            author = 'Валентино4ка от vk.com/id' + str(event.message.from_id) + '\n'
-                            target_id_or_name = (splt[1]).split('vk.com/')[1]
-                            target_id = vk_api.users.get(user_ids = target_id_or_name, fields = 'city')[0]['id']
-                            # print(target_id)
-                            attachs = [str(i['type'])+str(i[i['type']]['owner_id'])+'_'+str(i[i['type']]['id'])+('_'+str(i[i['type']]['access_key']) if 'access_key' in i[i['type']] else '' ) for i in  event.message['attachments']]
-                            print(event)
-                            vk_api.messages.send(user_id= target_id, attachment = ','.join(attachs), message= author+' '.join(splt[2:]), random_id= randint(0, 2048))
-                    except BaseException as error:
-                        print(error)
-                        vk_api.messages.send(user_id= event.message['from_id'], message= 'Иди нахуй клоун', random_id= randint(0, 2048))
+                # if event.type == VkBotEventType.MESSAGE_NEW and (not event.from_group and not event.from_chat ):
+                #     text = event.message['text']
+                #     splt = text.split(' ')
+                #     try :
+                #         if (splt[0] == 'валентинка') or (splt[0] == 'valentine'):
+                #             author = 'Валентино4ка от vk.com/id' + str(event.message.from_id) + '\n'
+                #             target_id_or_name = (splt[1]).split('vk.com/')[1]
+                #             target_id = vk_api.users.get(user_ids = target_id_or_name, fields = 'city')[0]['id']
+                #             # print(target_id)
+                #             attachs = [str(i['type'])+str(i[i['type']]['owner_id'])+'_'+str(i[i['type']]['id'])+('_'+str(i[i['type']]['access_key']) if 'access_key' in i[i['type']] else '' ) for i in  event.message['attachments']]
+                #             print(event)
+                #             vk_api.messages.send(user_id= target_id, attachment = ','.join(attachs), message= author+' '.join(splt[2:]), random_id= randint(0, 2048))
+                #     except BaseException as error:
+                #         print(error)
+                #         vk_api.messages.send(user_id= event.message['from_id'], message= 'Иди нахуй клоун', random_id= randint(0, 2048))
 
                 if event.type == VkBotEventType.MESSAGE_NEW and event.from_chat:
                     sender_id = event.message['from_id']

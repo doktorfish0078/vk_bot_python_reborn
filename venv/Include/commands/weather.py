@@ -8,6 +8,7 @@ weather_type = {
     "Облачно с прояснениями": "⛅️",
     "Небольшой дождь": "🌧",
     "Дождь": "🌧☔️🌧",
+    "Ливни": "☔☔☔",
     "Малооблачно": "🌤",
     "Небольшой снег": "❄",
     "Снег": "❄⛄❄",
@@ -45,21 +46,19 @@ def weather(tomorrow=False, week=False):
 
             date = '{} {}\n'.format(
                 weather_soup[card].find('strong', {'class', 'forecast-details__day-number'}).text,
-                weather_soup[card].find('span', {'class', 'forecast-details__day-month'}).text)
+                weather_soup[card].find('span', {'class', 'forecast-details__day-month'}).text
+            )
 
             result_weather[0] += date
             result_weather[1] = weather_condition[2].text
+
             for day in range(len(time_day)):
                 result_weather[0] += "{0} {1}°С, {2}{3}, ощущается как {4}°С\n".format(
                     time_day[day], temp[day].text, weather_condition[day].text,
                     weather_type[weather_condition[day].text], temp_feels_like[day].find('span', {'class', 'temp__value temp__value_with-unit'}).text
                 )
-            result_weather[0] += '\n'
         return result_weather
 
     except BaseException as error:
         print(error)
         return ("Не удалось получить погоду :(", "Err")
-
-
-print(weather())
