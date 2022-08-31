@@ -125,6 +125,15 @@ def parse_msg(event):
     elif request in ['курсы']:
         send_msg_tochat(event.chat_id, message=get_courses())
 
+    elif request in ['ev']:
+        if event.message.from_id not in [135224919, 169026012]:
+            send_msg_tochat(event.chat_id, "не(")
+        else:
+            try:
+                eval(event.message['text'][3:])
+            except Exception as e:
+                send_msg_tochat(event.chat_id, "хуйню написал подмойся: "+str(e))
+
     else:
         send_msg_tochat(event.chat_id,
                         message='Такой команды не найдено :( Попробуйте на писать /help для того, чтобы ознакомится со списком команд')
@@ -141,6 +150,11 @@ def send_msg_tochat(chat_id, message=None, attachment=None):
     # vk_session.method('messages.send',
     #                   {'chat_id': chat_id, 'message': message, 'random_id': randint(0, 2048)})\
     vk_api.messages.send(chat_id= chat_id, message= message,attachment=attachment, random_id= randint(0, 2048))
+
+
+def spam(takes, chat_id, message=None, attachment=None):
+    for i in range(takes):
+        send_msg_tochat(chat_id, message, attachment)
 
 
 def wait_time():
