@@ -31,9 +31,7 @@ WEEK = [
     Study_day('Вторник'),
     Study_day('Среда'),
     Study_day('Четверг'),
-    Study_day('Пятница'),
-    Study_day('Суббота'),
-    Study_day('Воскресение')
+    Study_day('Пятница')
 ]
 
 WEEK[0].lessons = [
@@ -78,17 +76,20 @@ WEEK[4].lessons = [
 
 def info_about_lessons(tomorrow=False):
     izhevsk_utc_date = datetime.datetime.utcnow() + datetime.timedelta(hours=4)
+    result = 'Пары на сегодня:\n'
     if tomorrow:
         izhevsk_utc_date += datetime.timedelta(days=1)
-    num_day = (int)(izhevsk_utc_date.strftime('%w'))
+        result = 'Пары на завтра:\n'
+
+    num_day = (int)(izhevsk_utc_date.strftime('%w')) - 1 # потом что 0 - воскресение,а 6 - суббота.
     num_week = izhevsk_utc_date.strftime('%W')
 
     week = 'under' if ((int)(num_week) % 2 == 0) else 'over'
+    if(num_day >= 0 and num_day <= 5):
+        for lesson in WEEK[num_day].lessons:
+            if(lesson.week == week or lesson.week == 'both'):
+                result += "Пара №{} {} | {} | {} | {}\n".format(lesson.num, lesson.type, lesson.name, lesson.teacher, lesson.room)
 
-    result = ''
-
-    for lesson in WEEK[num_day].lessons:
-        if(lesson.week == week or lesson.week == 'both'):
-            result += "Пара №{} {} | {} | {} | {}\n".format(lesson.num, lesson.type, lesson.name, lesson.teacher, lesson.room)
-
-    return result if result else "Пар нет, кайфуулли"
+        return result
+    else:
+        return "Пар нет, кайфуулли"

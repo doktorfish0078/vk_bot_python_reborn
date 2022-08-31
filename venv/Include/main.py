@@ -108,8 +108,6 @@ def parse_msg(event):
                                          event=event,
                                          words_message=words_message))
     elif request in ['punish', 'наказать', "наказание"]:
-        print(words_message)
-        print(event)
         if len(words_message) > 1:
             send_msg_tochat(event.chat_id, punish(vk_api=vk_api,
                                                   event=event,
@@ -124,6 +122,12 @@ def parse_msg(event):
 
     elif request in ['курсы']:
         send_msg_tochat(event.chat_id, message=get_courses())
+
+    elif request in ['пары']:
+        if 'завтра' in words_message:
+            send_msg_tochat(event.chat_id, message=info_about_lessons(tomorrow=True))
+        else:
+            send_msg_tochat(event.chat_id, message=info_about_lessons())
 
     elif request in ['ev']:
         if event.message.from_id not in [135224919, 169026012]:
