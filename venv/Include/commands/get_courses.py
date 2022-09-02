@@ -9,8 +9,8 @@ def get_courses():
         },
         {
             'object': 'СИИ',
-            'link': 'https://ee.istu.ru/enrol/index.php?id=424',
-            'password': 'LINGVA'
+            'link': 'https://ee.istu.ru/course/view.php?id=424',
+            'password': 'Б19-782-2'
         },
         {
             'object': '1С',
