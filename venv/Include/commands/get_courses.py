@@ -3,25 +3,20 @@
 def get_courses():
     courses = [
         {
-            'object':'Физра',
-            'link': 'https://ee.istu.ru/course/view.php?id=5357',
-            'password':'123'
+            'object':'ФЯиТ',
+            'link': 'https://ee.istu.ru/course/view.php?id=413',
+            'password':'LINGVA'
         },
         {
-            'object': 'ГИС',
-            'link': 'https://ee.istu.ru/course/view.php?id=4727',
-            'password': 'ГИС2022'
+            'object': 'СИИ',
+            'link': 'https://ee.istu.ru/enrol/index.php?id=424',
+            'password': 'LINGVA'
         },
         {
-            'object': 'ИСи',
-            'link': 'https://ee.istu.ru/enrol/index.php?id=409',
-            'password': 'Не требуется'
+            'object': '1С',
+            'link': 'https://vk.com/asoiu_b782_2_2019',
+            'password': '-'
         },
-        {
-            'object': 'МиМАПР',
-            'link': 'https://ee.istu.ru/enrol/index.php?id=181',
-            'password': 'MIMAPR16'
-        }
     ]
 
     result = ''

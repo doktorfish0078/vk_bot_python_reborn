@@ -1,5 +1,6 @@
 import datetime
 
+
 class Study_day(object):
     def __init__(self, day_of_the_week):
         self.day_of_the_week = day_of_the_week
@@ -27,11 +28,11 @@ lesson_type = {
 }
 
 WEEK = [
-    Study_day('Понедельник'),
-    Study_day('Вторник'),
-    Study_day('Среда'),
-    Study_day('Четверг'),
-    Study_day('Пятница')
+    Study_day('понедельник'),
+    Study_day('вторник'),
+    Study_day('среда'),
+    Study_day('четверг'),
+    Study_day('пятница')
 ]
 
 WEEK[0].lessons = [
@@ -74,7 +75,7 @@ WEEK[4].lessons = [
     Lesson(week_types[3], 5, lesson_type[3], 'Системы ИИ', 'Мокроусов М.Н.', '3-505'),
 ]
 
-def info_about_lessons(tomorrow=False):
+def info_about_lessons(tomorrow=False, any_day=False):
     izhevsk_utc_date = datetime.datetime.utcnow() + datetime.timedelta(hours=4)
     result = 'Пары на сегодня:\n'
     if tomorrow:
@@ -85,11 +86,14 @@ def info_about_lessons(tomorrow=False):
     num_week = izhevsk_utc_date.strftime('%W')
 
     week = 'under' if ((int)(num_week) % 2 == 0) else 'over'
+
     if(num_day >= 0 and num_day <= 5):
         for lesson in WEEK[num_day].lessons:
             if(lesson.week == week or lesson.week == 'both'):
                 result += "Пара №{} {} | {} | {} | {}\n".format(lesson.num, lesson.type, lesson.name, lesson.teacher, lesson.room)
-
         return result
     else:
         return "Пар нет, кайфуулли"
+
+
+print(info_about_lessons())
