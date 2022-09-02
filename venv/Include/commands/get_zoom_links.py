@@ -14,5 +14,3 @@ def get_zoom_links():
         result += '😶{}\nСсылка: {}\nПароль: {}\n'.format(link['object'],link['link'],link['password'])
 
     return result if result else "Нет актуальных ссылок"
-
-print(get_zoom_links())
