@@ -88,7 +88,7 @@ def info_about_lessons(tomorrow=False, any_day=False):
 
     week = 'under' if ((int)(num_week) % 2 == 0) else 'over'
 
-    if(num_day >= 0 and num_day <= 5):
+    if(num_day >= 0 and num_day <= 4):
         for lesson in WEEK[num_day].lessons:
             if(lesson.week == week or lesson.week == 'both'):
                 result += "Пара №{} {} | {} | {} | {}\n".format(lesson.num, lesson.type, lesson.name, lesson.teacher, lesson.room)

@@ -28,6 +28,7 @@ from commands.info_about_lesson import info_about_lessons
 token = 'e94dbd6b9db4af4afd0cde9f0f7be84922aa1d01a34734a533a878650f493d596459b2d87cef2c7128110'
 group_id = '198707501'
 
+
 def main():
     global vk_session
     global vk_api
@@ -38,6 +39,17 @@ def main():
         while True:
             print('Bot started')
             for event in longpoll.listen():
+                try:
+                    if event.type == VkBotEventType.MESSAGE_NEW and event.from_chat:
+                        print_report(event)
+                        sender_id = event.message['from_id']
+                    if event.message['text'] != '':
+                        if event.message['text'][0] == '/':
+                            parse_msg(event)
+                        elif event.message['attachments'] and event.message['attachments'][0]['type'] == 'audio_message':
+                                pass
+                except requests.exceptions.ReadTimeout:
+                    print_report("Порвалось соединение")
 
                 #valentine
                 # if event.type == VkBotEventType.MESSAGE_NEW and (not event.from_group and not event.from_chat ):
@@ -56,13 +68,7 @@ def main():
                 #         print(error)
                 #         vk_api.messages.send(user_id= event.message['from_id'], message= 'Иди нахуй клоун', random_id= randint(0, 2048))
 
-                if event.type == VkBotEventType.MESSAGE_NEW and event.from_chat:
-                    sender_id = event.message['from_id']
-                    if event.message['text'] != '':
-                        if event.message['text'][0] == '/':
-                            parse_msg(event)
-                        elif event.message['attachments'] and event.message['attachments'][0]['type'] == 'audio_message':
-                                pass
+
 
     except requests.exceptions.ReadTimeout:
         print("\n Переподключение к серверам ВК \n")
@@ -175,6 +181,9 @@ def wait_time():
                 send_msg_tochat(id, info_for_the_day(tomorrow=True))
         time.sleep(60)
 
+
+def print_report(report):
+	print("{}: {}".format(datetime.datetime.utcnow() + datetime.timedelta(hours=4), report))
 
 class MyVkLongPoll(VkBotLongPoll):
     def listen(self):
