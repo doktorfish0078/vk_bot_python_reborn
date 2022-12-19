@@ -95,6 +95,3 @@ def info_about_lessons(tomorrow=False, any_day=False):
         return result
     else:
         return "Пар нет, кайфуулли"
-
-
-print(info_about_lessons())

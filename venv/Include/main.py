@@ -34,10 +34,10 @@ def main():
     global vk_api
     try:
         vk_session = VkApi(token=token)
-        longpoll = MyVkLongPoll(vk_session, group_id, wait=10)
+        longpoll = MyVkLongPoll(vk_session, group_id, wait=25)
         vk_api = vk_session.get_api()
         while True:
-            print('Bot started')
+            print_report("Прослушивание запущено")
             for event in longpoll.listen():
                 try:
                     if event.type == VkBotEventType.MESSAGE_NEW and event.from_chat:
@@ -48,30 +48,13 @@ def main():
                             parse_msg(event)
                         elif event.message['attachments'] and event.message['attachments'][0]['type'] == 'audio_message':
                                 pass
-                except requests.exceptions.ReadTimeout:
-                    print_report("Порвалось соединение")
+                except Exception as e:
+                    print_report(e)
+                    time.sleep(3)
+                    continue
 
-                #valentine
-                # if event.type == VkBotEventType.MESSAGE_NEW and (not event.from_group and not event.from_chat ):
-                #     text = event.message['text']
-                #     splt = text.split(' ')
-                #     try :
-                #         if (splt[0] == 'валентинка') or (splt[0] == 'valentine'):
-                #             author = 'Валентино4ка от vk.com/id' + str(event.message.from_id) + '\n'
-                #             target_id_or_name = (splt[1]).split('vk.com/')[1]
-                #             target_id = vk_api.users.get(user_ids = target_id_or_name, fields = 'city')[0]['id']
-                #             # print(target_id)
-                #             attachs = [str(i['type'])+str(i[i['type']]['owner_id'])+'_'+str(i[i['type']]['id'])+('_'+str(i[i['type']]['access_key']) if 'access_key' in i[i['type']] else '' ) for i in  event.message['attachments']]
-                #             print(event)
-                #             vk_api.messages.send(user_id= target_id, attachment = ','.join(attachs), message= author+' '.join(splt[2:]), random_id= randint(0, 2048))
-                #     except BaseException as error:
-                #         print(error)
-                #         vk_api.messages.send(user_id= event.message['from_id'], message= 'Иди нахуй клоун', random_id= randint(0, 2048))
-
-
-
-    except requests.exceptions.ReadTimeout:
-        print("\n Переподключение к серверам ВК \n")
+    except Exception as e:
+        print_report(e)
         time.sleep(3)
 
 
@@ -149,7 +132,6 @@ def parse_msg(event):
                         message='Такой команды не найдено :( Попробуйте на писать /help для того, чтобы ознакомится со списком команд')
 
 
-
 def send_msg_tochat(chat_id, message=None, attachment=None):
     """
     Отправка сообщения через метод messages.send
@@ -159,8 +141,9 @@ def send_msg_tochat(chat_id, message=None, attachment=None):
     """
     # vk_session.method('messages.send',
     #                   {'chat_id': chat_id, 'message': message, 'random_id': randint(0, 2048)})\
-    vk_api.messages.send(chat_id= chat_id, message= message,attachment=attachment, random_id= randint(0, 2048))
-
+    response = vk_api.messages.send(chat_id= chat_id, message= message,attachment=attachment, random_id= randint(0, 2048))
+    print_report(response)
+    return response
 
 def spam(takes, chat_id, message=None, attachment=None):
     for i in range(takes):
@@ -168,7 +151,7 @@ def spam(takes, chat_id, message=None, attachment=None):
 
 
 def wait_time():
-    print("wait timer started")
+    print_report("Временной таймер для спама запущен")
     list_ids_chats_for_spam = [2,5]
     # send_msg_tochat(2, welcome_msg())
     while True:
@@ -201,3 +184,20 @@ if __name__ == '__main__':
     listener_thread.start()
     time.sleep(5)
     waiter_thread.start()
+
+    # valentine
+    # if event.type == VkBotEventType.MESSAGE_NEW and (not event.from_group and not event.from_chat ):
+    #     text = event.message['text']
+    #     splt = text.split(' ')
+    #     try :
+    #         if (splt[0] == 'валентинка') or (splt[0] == 'valentine'):
+    #             author = 'Валентино4ка от vk.com/id' + str(event.message.from_id) + '\n'
+    #             target_id_or_name = (splt[1]).split('vk.com/')[1]
+    #             target_id = vk_api.users.get(user_ids = target_id_or_name, fields = 'city')[0]['id']
+    #             # print(target_id)
+    #             attachs = [str(i['type'])+str(i[i['type']]['owner_id'])+'_'+str(i[i['type']]['id'])+('_'+str(i[i['type']]['access_key']) if 'access_key' in i[i['type']] else '' ) for i in  event.message['attachments']]
+    #             print(event)
+    #             vk_api.messages.send(user_id= target_id, attachment = ','.join(attachs), message= author+' '.join(splt[2:]), random_id= randint(0, 2048))
+    #     except BaseException as error:
+    #         print(error)
+    #         vk_api.messages.send(user_id= event.message['from_id'], message= 'Иди нахуй клоун', random_id= randint(0, 2048))
