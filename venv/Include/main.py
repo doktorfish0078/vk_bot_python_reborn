@@ -52,17 +52,12 @@ def main():
         while True:
             print_report("Прослушивание запущено")
             for event in longpoll.listen():
-                try:
-                    if event.type == VkBotEventType.MESSAGE_NEW and event.from_chat:
-                        print_report(event)
-                        chat_id = event.chat_id
-                        sender_id = event.message['from_id']
-                    if event.message['text'] != '' and event.message['text'][0] == '/':
-                        parse_msg(event)
-                except Exception as e:
-                    print_report(e)
-                    time.sleep(3)
-                    continue
+                if event.type == VkBotEventType.MESSAGE_NEW and event.from_chat:
+                    print_report(event)
+                    chat_id = event.chat_id
+                    sender_id = event.message['from_id']
+                if event.message['text'] != '' and event.message['text'][0] == '/':
+                    parse_msg(event)
 
     except Exception as e:
         print_report(e)
