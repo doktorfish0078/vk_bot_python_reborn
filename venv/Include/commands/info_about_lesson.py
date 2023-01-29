@@ -36,44 +36,32 @@ WEEK = [
 ]
 
 WEEK[0].lessons = [
-    Lesson(week_types[3], 2, lesson_type[3], 'Программирование 1С', 'Соловьёва А.Н.', '3-602'),
-    Lesson(week_types[1], 3, lesson_type[1], 'Программирование 1С', 'Соловьёва А.Н.', '3-3'),
-    Lesson(week_types[3], 3, lesson_type[3], 'Программирование 1С', 'Соловьёва А.Н.', '3-602'),
-    Lesson(week_types[3], 4, lesson_type[1], 'Тестирование ПО', 'Шибанова Ю.В.', '3-2'),
-    Lesson(week_types[2], 5, lesson_type[1], 'БЖД', 'Николаева Л.С.', '3-1'),
-    Lesson(week_types[2], 6, lesson_type[1], 'Основы системного анализа', 'Касаткина Е.В.', '3-216'),
-    Lesson(week_types[1], 7, lesson_type[2], 'Основы системного анализа', 'Касаткина Е.В.', '3-603'),
 ]
 
 WEEK[1].lessons = [
-    Lesson(week_types[3], 2, lesson_type[3], 'Цифровая обратобка изображений', 'Севрюгин В.Р.', '3-513б'),
-    Lesson(week_types[3], 3, lesson_type[3], 'Цифровая обратобка изображений', 'Севрюгин В.Р.', '3-513б'),
-    Lesson(week_types[1], 5, lesson_type[1], 'Цифровая обратобка изображений', 'Севрюгин В.Р.', '3-3'),
-    Lesson(week_types[3], 5, lesson_type[2], 'Цифровая обратобка изображений', 'Севрюгин В.Р.', '3-609а'),
-    Lesson(week_types[1], 6, lesson_type[2], 'Формальные языки и трансляторы', 'Касимов Д.Р.', '3-609а'),
+    Lesson(week_types[1], 4, lesson_type[1], 'Защита информации', 'Стулакина Е.Ф.', '3-7'),
+    Lesson(week_types[2], 5, lesson_type[3], 'Программирование мобильных приложений', 'Исупов Н.С.', '3-603а'),
+    Lesson(week_types[2], 6, lesson_type[3], 'Программирование мобильных приложений', 'Исупов Н.С.', '3-603а'),
 ]
 
 WEEK[2].lessons = [
-    Lesson(week_types[1], 3, lesson_type[3], 'Тестирование ПО', 'Шибанова Ю.В.', '3-804'),
-    Lesson(week_types[3], 3, lesson_type[2], 'БЖД', 'Николаева Л.С.', '3-705'),
-    Lesson(week_types[1], 4, lesson_type[3], 'Тестирование ПО', 'Шибанова Ю.В.', '3-804'),
-    Lesson(week_types[3], 4, lesson_type[2], 'Тестирование ПО', 'Шибанова Ю.В.', '3-609'),
-    Lesson(week_types[3], 5, lesson_type[3], 'Программирование 1С', 'Соловьёва А.Н.', '3-804'),
-    Lesson(week_types[3], 6, lesson_type[3], 'Программирование 1С', 'Соловьёва А.Н.', '3-804'),
-
+    Lesson(week_types[2], 2, lesson_type[1], 'Проектирование АСОиУ', 'Соболева Н.В.', '3-8'),
+    Lesson(week_types[2], 3, lesson_type[1], 'Программирование мобильных приложений', 'Исупов Н.С.', '3-2'),
+    Lesson(week_types[1], 4, lesson_type[2], 'НИР', 'Телегина М.В.', '3-609'),
+    Lesson(week_types[3], 4, lesson_type[3], 'Защита информации', 'Стулакина Е.Ф.', '7-518'),
+    Lesson(week_types[3], 5, lesson_type[3], 'Защита информации', 'Стулакина Е.Ф.', '7-518'),
 ]
 
 WEEK[3].lessons = [
-    Lesson(week_types[1], 3, lesson_type[1], 'Программирование 1С', 'Соловьёва А.Н.', '3-3'),
-    Lesson(week_types[3], 3, lesson_type[2], 'Системы ИИ', 'Мокроусов М.Н.', '3-609а'),
-    Lesson(week_types[1], 4, lesson_type[1], 'Системы ИИ', 'Мокроусов М.Н.', '3-3'),
-    Lesson(week_types[1], 5, lesson_type[3], 'Формальные языки и трансляторы', 'Касимов Д.Р.', '3-603а'),
+    Lesson(week_types[2], 1, lesson_type[3], 'Проектирование АСОиУ', 'Соболева Н.В.', '3-603а'),
+    Lesson(week_types[2], 2, lesson_type[3], 'Проектирование АСОиУ', 'Соболева Н.В.', '3-603а'),
+    Lesson(week_types[2], 3, lesson_type[2], 'Защита информации', 'Стулакина Е.Ф.', '7-518'),
+
 ]
 
 WEEK[4].lessons = [
-    Lesson(week_types[2], 3, lesson_type[1], 'Формальные языки и трансляторы', 'Касимов Д.Р.', '3-216'),
-    Lesson(week_types[3], 4, lesson_type[3], 'Системы ИИ', 'Мокроусов М.Н.', '3-505'),
-    Lesson(week_types[3], 5, lesson_type[3], 'Системы ИИ', 'Мокроусов М.Н.', '3-505'),
+    Lesson(week_types[2], 4, lesson_type[2], 'Проектирование АСОиУ', 'Соболева Н.В.', '3-603'),
+    Lesson(week_types[2], 5, lesson_type[2], 'Программирование мобильных приложений', 'Исупов Н.С.', '3-609а'),
 ]
 
 def info_about_lessons(tomorrow=False, any_day=False):
@@ -88,7 +76,10 @@ def info_about_lessons(tomorrow=False, any_day=False):
 
     week = 'under' if ((int)(num_week) % 2 == 0) else 'over'
 
-    if(num_day >= 0 and num_day <= 4):
+    if num_day >= 0 and num_day <= 4:
+        if len(WEEK[num_day].lessons) == 0:
+            return "Пар нет, кайфуулли"
+
         for lesson in WEEK[num_day].lessons:
             if(lesson.week == week or lesson.week == 'both'):
                 result += "Пара №{} {} | {} | {} | {}\n".format(lesson.num, lesson.type, lesson.name, lesson.teacher, lesson.room)
