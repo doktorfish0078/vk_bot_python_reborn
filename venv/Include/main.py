@@ -45,23 +45,20 @@ class MyVkLongPoll(VkBotLongPoll):
 def main():
     global vk_session
     global vk_api
-    try:
-        vk_session = VkApi(token=token)
-        longpoll = MyVkLongPoll(vk_session, group_id, wait=25)
-        vk_api = vk_session.get_api()
-        while True:
-            print_report("Прослушивание запущено")
-            for event in longpoll.listen():
-                if event.type == VkBotEventType.MESSAGE_NEW and event.from_chat:
-                    print_report(event)
-                    chat_id = event.chat_id
-                    sender_id = event.message['from_id']
-                if event.message['text'] != '' and event.message['text'][0] == '/':
-                    parse_msg(event)
 
-    except Exception as e:
-        print_report(e)
-        time.sleep(3)
+    vk_session = VkApi(token=token)
+    longpoll = MyVkLongPoll(vk_session, group_id, wait=25)
+    vk_api = vk_session.get_api()
+    while True:
+        print_report("Прослушивание запущено")
+        for event in longpoll.listen():
+            if event.type == VkBotEventType.MESSAGE_NEW and event.from_chat:
+                print_report(event)
+                chat_id = event.chat_id
+                sender_id = event.message['from_id']
+            if event.message['text'] != '' and event.message['text'][0] == '/':
+                parse_msg(event)
+
 
 
 def parse_msg(event):

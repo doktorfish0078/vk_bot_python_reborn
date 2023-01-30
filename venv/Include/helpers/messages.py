@@ -17,7 +17,7 @@ def send_msg_tochat(vk_api, chat_id, message=None, attachment=None):
         try:
             response = vk_api.messages.send(chat_id=chat_id, message=message,attachment=attachment, random_id= randint(0, 2048))
             return response
-        except ConnectionResetError as error:
+        except Exception as error:
             print_report(error)
             continue
     return error # Хз что возвращать лучше,если не получилась отправка
