@@ -24,9 +24,11 @@ from commands.couple import couple
 from commands.get_courses import get_courses
 from commands.get_zoom_links import get_zoom_links
 from commands.info_about_lesson import info_about_lessons
+from commands.setting_bot import settings_session
+from commands.create_new_course import create_new_course
 
 from helpers.regional_datetime import regional_datetime
-from helpers.messages import send_msg_tochat
+from helpers.messages import send_msg_tochat, send_msg_touser
 from helpers.server_notification import print_report
 
 token = 'e94dbd6b9db4af4afd0cde9f0f7be84922aa1d01a34734a533a878650f493d596459b2d87cef2c7128110'
@@ -56,12 +58,14 @@ def main():
                 print_report(event)
                 chat_id = event.chat_id
                 sender_id = event.message['from_id']
-            if event.message['text'] != '' and event.message['text'][0] == '/':
-                parse_msg(event)
+                if event.message['text'] != '' and event.message['text'][0] == '/':
+                    parse_chat_msg(event)
+            if event.type == VkBotEventType.MESSAGE_NEW and event.from_user:
+                parse_settings_msg(event)
 
 
 
-def parse_msg(event):
+def parse_chat_msg(event):
     msg_text = event.message['text'].lower()
     words_message = re.split("[, \-!?:]+", msg_text[1:])  #all words[] without first char /
     request = words_message[0]  # first word after /
@@ -104,10 +108,32 @@ def parse_msg(event):
         else:
             send_msg_tochat(vk_api, event.chat_id, message=info_about_lessons())
 
+    elif request in ['настройка']:
+        settings_session(vk_api=vk_api, chat_id=event.chat_id, user_sender_id=event.message.from_id)
     else:
         send_msg_tochat(vk_api,event.chat_id,
                         message='Такой команды не найдено :( Попробуйте на писать /help для того, чтобы ознакомится со списком команд')
 
+
+def parse_settings_msg(event):
+    # Форма сообщения /КОМАНДА ID_CHAT PARAMS
+    words_message = re.split("[, \-!?:]+", event.message['text'][1:])  #all words[] without first char /
+    request = words_message[0]  # first word after /
+    if request in ['добавить']:
+        if 'курс' in words_message:
+            finded_params = re.findall(r'.* (\d{10}) (.+) (.+) (.+)', event.message['text'])
+            if finded_params:
+                chat_id, title, link, password = finded_params[0]
+                create_new_course(chat_id, title, link, password)
+            else:
+                send_msg_touser(vk_api, event.message['from_id'], "Извините,вы где-то ошиблись")
+        if 'ссылку' in words_message:
+            pass
+    elif request in ['расписание']:
+        pass
+    elif request in ['задать']:
+        if 'неделю' in words_message:
+            pass
 
 def wait_time():
     print_report("Временной таймер для спама запущен")
