@@ -1,5 +1,7 @@
 import datetime
 
+from Include.helpers.regional_datetime import regional_datetime
+
 
 class Study_day(object):
     def __init__(self, day_of_the_week):
@@ -64,8 +66,10 @@ WEEK[4].lessons = [
     Lesson(week_types[2], 5, lesson_type[2], 'Программирование мобильных приложений', 'Исупов Н.С.', '3-609а'),
 ]
 
+
+
 def info_about_lessons(tomorrow=False, any_day=False):
-    izhevsk_utc_date = datetime.datetime.utcnow() + datetime.timedelta(hours=4)
+    izhevsk_utc_date = regional_datetime(4)
     result = 'Пары на сегодня:\n'
     if tomorrow:
         izhevsk_utc_date += datetime.timedelta(days=1)

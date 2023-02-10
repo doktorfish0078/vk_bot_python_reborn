@@ -10,26 +10,31 @@ from vk_api import VkApi
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 
 
-from commands.welcome import welcome_msg
-from commands.weather import weather
-from commands.animes import get_top
-from commands.how_week import how_week
-from commands.info_for_the_day import info_for_the_day
-from commands.schedule_bus import get_byte_screen_schedule_bus
-from commands.upload_bin_img_on_vk import get_attachment
-from commands.help_faq import help_faq
-from commands.skirmish import skirmish
-from commands.punish import punish
-from commands.couple import couple
-from commands.get_courses import get_courses
-from commands.get_zoom_links import get_zoom_links
-from commands.info_about_lesson import info_about_lessons
-from commands.setting_bot import settings_session
-from commands.create_new_course import create_new_course
+from Include.commands.welcome import welcome_msg
+from Include.commands.weather import weather
+from Include.commands.animes import get_top
+from Include.commands.how_week import how_week
+from Include.commands.info_for_the_day import info_for_the_day
+from Include.commands.schedule_bus import get_byte_screen_schedule_bus
+from Include.commands.upload_bin_img_on_vk import get_attachment
+from Include.commands.help_faq import help_faq
+from Include.commands.skirmish import skirmish
+from Include.commands.punish import punish
+from Include.commands.couple import couple
+from Include.commands.get_courses import get_courses
+from Include.commands.get_zoom_links import get_zoom_links
+from Include.commands.info_about_lesson import info_about_lessons
+from Include.commands.setting_bot import settings_session
+from Include.commands.create_new_course import create_new_course
+from Include.commands.create_new_link import create_new_link
+from Include.commands.new_invite import new_invite
 
-from helpers.regional_datetime import regional_datetime
-from helpers.messages import send_msg_tochat, send_msg_touser
-from helpers.server_notification import print_report
+from Include.helpers.regional_datetime import regional_datetime
+from Include.helpers.messages import send_msg_tochat, send_msg_touser
+from Include.helpers.server_notification import print_report
+
+import Include.rest_db as rest_db
+
 
 token = 'e94dbd6b9db4af4afd0cde9f0f7be84922aa1d01a34734a533a878650f493d596459b2d87cef2c7128110'
 group_id = '198707501'
@@ -54,16 +59,19 @@ def main():
     while True:
         print_report("Прослушивание запущено")
         for event in longpoll.listen():
-            if event.type == VkBotEventType.MESSAGE_NEW and event.from_chat:
+            if event.type == VkBotEventType.MESSAGE_NEW:
                 print_report(event)
-                chat_id = event.chat_id
-                sender_id = event.message['from_id']
-                if event.message['text'] != '' and event.message['text'][0] == '/':
-                    parse_chat_msg(event)
-            if event.type == VkBotEventType.MESSAGE_NEW and event.from_user:
-                parse_settings_msg(event)
+                if event.from_chat:
+                    if 'action' in event.message:
+                        if (event.message['action']['type'] == 'chat_invite_user'
+                        and event.message['action']['member_id'] == -198707501):
+                            new_invite(vk_api, event.chat_id)
 
+                    if event.message['text'] != '' and event.message['text'][0] == '/':
+                        parse_chat_msg(event)
 
+                elif event.from_user:
+                    parse_settings_msg(event)
 
 def parse_chat_msg(event):
     msg_text = event.message['text'].lower()
@@ -100,7 +108,7 @@ def parse_chat_msg(event):
         send_msg_tochat(vk_api, event.chat_id, message=get_zoom_links())
 
     elif request in ['курсы']:
-        send_msg_tochat(vk_api, event.chat_id, message=get_courses())
+        send_msg_tochat(vk_api, event.chat_id, message=get_courses(event.chat_id))
 
     elif request in ['пары']:
         if 'завтра' in words_message:
@@ -124,11 +132,20 @@ def parse_settings_msg(event):
             finded_params = re.findall(r'.* (\d{10}) (.+) (.+) (.+)', event.message['text'])
             if finded_params:
                 chat_id, title, link, password = finded_params[0]
-                create_new_course(chat_id, title, link, password)
+                res = create_new_course(chat_id, title, link, password)
+                if res:
+                    send_msg_touser(vk_api, event.message['from_id'], "Ваш курс успешно сохранён")
             else:
                 send_msg_touser(vk_api, event.message['from_id'], "Извините,вы где-то ошиблись")
+
         if 'ссылку' in words_message:
-            pass
+            finded_params = re.findall(r'.* (\d{10}) (.+) (.+) (.+)', event.message['text'])
+            if finded_params:
+                chat_id, title, link, password = finded_params[0]
+                create_new_link(chat_id, title, link, password)
+            else:
+                send_msg_touser(vk_api, event.message['from_id'], "Извините,вы где-то ошиблись")
+
     elif request in ['расписание']:
         pass
     elif request in ['задать']:
@@ -156,5 +173,6 @@ if __name__ == '__main__':
     listener_thread.start()
     time.sleep(5)
     waiter_thread.start()
+
 
 

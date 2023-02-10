@@ -1,6 +1,6 @@
 from random import randint
 
-from helpers.server_notification import print_report
+from Include.helpers.server_notification import print_report
 
 def send_msg_tochat(vk_api, chat_id, message=None, attachment=None):
     """

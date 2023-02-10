@@ -2,14 +2,14 @@ import os
 import sys
 import datetime
 
-sys.path.insert(1, os.path.join(sys.path[0], '..'))
+from Include.commands.weather import weather
+from Include.commands.how_week import how_week
+from Include.commands.info_about_lesson import info_about_lessons
 
-from commands.weather import weather
-from commands.how_week import how_week
-from commands.info_about_lesson import info_about_lessons
+from Include.helpers.regional_datetime import regional_datetime
 
 def info_for_the_day(tomorrow = False):
-    izhevsk_utc_date = datetime.datetime.utcnow() + datetime.timedelta(hours=4)
+    izhevsk_utc_date = regional_datetime(4)
 
     if tomorrow:
         timedelta = datetime.timedelta(days=1)

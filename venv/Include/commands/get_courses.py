@@ -1,26 +1,16 @@
+import Include.rest_db as rest_db
 
-
-def get_courses():
-    courses = [
-        {
-            'object':'ФЯиТ',
-            'link': 'https://ee.istu.ru/course/view.php?id=413',
-            'password':'LINGVA'
-        },
-        {
-            'object': 'СИИ',
-            'link': 'https://ee.istu.ru/course/view.php?id=424',
-            'password': 'Б19-782-2'
-        },
-        {
-            'object': '1С',
-            'link': 'https://vk.com/asoiu_b782_2_2019',
-            'password': '-'
-        },
-    ]
-
+def get_courses(chat_id):
+    """
+    :param chat_id: < 100000000, event.chat_id возвращает не полный id чата, а урезанный. Полный это 2000000000 + event.chat_id
+    :return:
+    """
+    courses = rest_db.get_all_courses(2000000000 + chat_id)
     result = ''
-    for course in courses:
-        result += '😶{}\nСсылка: {}\nПароль: {}\n'.format(course['object'],course['link'],course['password'])
+    if type(courses) == dict:
+        for key, value in courses.items():
+            result += '😶{}\nСсылка: {}\nПароль: {}\n'.format(value['title'],value['link'],value['password'])
 
-    return result
+        return result
+    else:
+        return "Курсов не найдено"
