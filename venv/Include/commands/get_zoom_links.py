@@ -1,16 +1,13 @@
+import Include.rest_db as rest_db
 
-
-def get_zoom_links():
-    links = [
-        # {
-        #     'object':'МиМАПР',
-        #     'link': 'https://us04web.zoom.us/j/120200433?pwd=bEtxYzVoZTRrdFpPdjF3UTJ5TjB2Zz09',
-        #     'password':'9EByKr'
-        # },
-    ]
+def get_zoom_links(peer_id):
+    links = rest_db.get_all_links(peer_id)
 
     result = ''
-    for link in links:
-        result += '😶{}\nСсылка: {}\nПароль: {}\n'.format(link['object'],link['link'],link['password'])
+    if type(links) == dict:
+        for key, value in links.items():
+            result += '😶{}\nСсылка: {}\nПароль: {}\n'.format(value['title'], value['link'], value['password'])
 
-    return result if result else "Нет актуальных ссылок"
+        return result
+    else:
+        return "Ссылок не найдено"

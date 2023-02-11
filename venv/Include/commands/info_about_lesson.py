@@ -1,5 +1,6 @@
 import datetime
 
+import Include.rest_db as rest_db
 from Include.helpers.regional_datetime import regional_datetime
 
 
@@ -17,11 +18,7 @@ class Lesson(object):
         self.teacher = teacher
         self.room = room
 
-week_types = {
-    1: 'over',
-    2: 'both',
-    3: 'under'
-}
+
 
 lesson_type = {
     1: 'Лекция',
@@ -29,64 +26,45 @@ lesson_type = {
     3: 'Л/р'
 }
 
-WEEK = [
-    Study_day('понедельник'),
-    Study_day('вторник'),
-    Study_day('среда'),
-    Study_day('четверг'),
-    Study_day('пятница')
-]
 
-WEEK[0].lessons = [
-]
+WEEKDAYS = {
+    0: "Понедельник",
+    1: "Вторник",
+    2: "Среда",
+    3: "Четверг",
+    4: "Пятница",
+    5: "Суббота",
+    6: "Воскресенье"
+}
 
-WEEK[1].lessons = [
-    Lesson(week_types[1], 4, lesson_type[1], 'Защита информации', 'Стулакина Е.Ф.', '3-7'),
-    Lesson(week_types[2], 5, lesson_type[3], 'Программирование мобильных приложений', 'Исупов Н.С.', '3-603а'),
-    Lesson(week_types[2], 6, lesson_type[3], 'Программирование мобильных приложений', 'Исупов Н.С.', '3-603а'),
-]
+WEEKTYPES = {
+    1: 'над',
+    2: 'оба',
+    3: 'под'
+}
 
-WEEK[2].lessons = [
-    Lesson(week_types[2], 2, lesson_type[1], 'Проектирование АСОиУ', 'Соболева Н.В.', '3-8'),
-    Lesson(week_types[2], 3, lesson_type[1], 'Программирование мобильных приложений', 'Исупов Н.С.', '3-2'),
-    Lesson(week_types[1], 4, lesson_type[2], 'НИР', 'Телегина М.В.', '3-609'),
-    Lesson(week_types[3], 4, lesson_type[3], 'Защита информации', 'Стулакина Е.Ф.', '7-518'),
-    Lesson(week_types[3], 5, lesson_type[3], 'Защита информации', 'Стулакина Е.Ф.', '7-518'),
-]
-
-WEEK[3].lessons = [
-    Lesson(week_types[2], 1, lesson_type[3], 'Проектирование АСОиУ', 'Соболева Н.В.', '3-603а'),
-    Lesson(week_types[2], 2, lesson_type[3], 'Проектирование АСОиУ', 'Соболева Н.В.', '3-603а'),
-    Lesson(week_types[2], 3, lesson_type[2], 'Защита информации', 'Стулакина Е.Ф.', '7-518'),
-
-]
-
-WEEK[4].lessons = [
-    Lesson(week_types[2], 4, lesson_type[2], 'Проектирование АСОиУ', 'Соболева Н.В.', '3-603'),
-    Lesson(week_types[2], 5, lesson_type[2], 'Программирование мобильных приложений', 'Исупов Н.С.', '3-609а'),
-]
-
-
-
-def info_about_lessons(tomorrow=False, any_day=False):
+def info_about_lessons(peer_id, tomorrow=None, any_day=None):
     izhevsk_utc_date = regional_datetime(4)
     result = 'Пары на сегодня:\n'
     if tomorrow:
         izhevsk_utc_date += datetime.timedelta(days=1)
         result = 'Пары на завтра:\n'
 
-    num_day = (int)(izhevsk_utc_date.strftime('%w')) - 1 # потом что 0 - воскресение,а 6 - суббота.
+    num_day = (int)(izhevsk_utc_date.strftime('%w')) - 1 # потому что у америконсов 0 - воскресенье,а 6 - суббота, а нам бы хотелось чтобы 0 - понедельник 6 -воскресенье.
     num_week = izhevsk_utc_date.strftime('%W')
 
-    week = 'under' if ((int)(num_week) % 2 == 0) else 'over'
+    weekday = WEEKDAYS[num_day]
+    week_type = 'над' if ((int)(num_week) % 2 == 0) else 'под'
+
+    schedule_on_day = rest_db.get_pairs_on_day(peer_id, weekday, week_type)
 
     if num_day >= 0 and num_day <= 4:
-        if len(WEEK[num_day].lessons) == 0:
-            return "Пар нет, кайфуулли"
+        if type(schedule_on_day) == list:
 
-        for lesson in WEEK[num_day].lessons:
-            if(lesson.week == week or lesson.week == 'both'):
-                result += "Пара №{} {} | {} | {} | {}\n".format(lesson.num, lesson.type, lesson.name, lesson.teacher, lesson.room)
-        return result
+            for pair in schedule_on_day:
+                result += "Пара №{} {} | {} | {} | {}\n".format(pair['num_pair'], pair['lesson_type'], pair['lesson_name'], pair['teacher'], pair['room'])
+            return result
+        else:
+            return "В расписании нет пар"
     else:
-        return "Пар нет, кайфуулли"
+        return "Пар нет, выходные, выдыхай"

@@ -1,11 +1,11 @@
 import Include.rest_db as rest_db
 
-def get_courses(chat_id):
+def get_courses(peer_id):
     """
-    :param chat_id: < 100000000, event.chat_id возвращает не полный id чата, а урезанный. Полный это 2000000000 + event.chat_id
+    :param peer_id:
     :return:
     """
-    courses = rest_db.get_all_courses(2000000000 + chat_id)
+    courses = rest_db.get_all_courses(peer_id)
     result = ''
     if type(courses) == dict:
         for key, value in courses.items():

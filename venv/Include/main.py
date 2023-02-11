@@ -30,7 +30,7 @@ from Include.commands.create_new_link import create_new_link
 from Include.commands.new_invite import new_invite
 
 from Include.helpers.regional_datetime import regional_datetime
-from Include.helpers.messages import send_msg_tochat, send_msg_touser
+from Include.helpers.messages import send_msg, send_msg
 from Include.helpers.server_notification import print_report
 
 import Include.rest_db as rest_db
@@ -47,7 +47,7 @@ class MyVkLongPoll(VkBotLongPoll):
                 for event in self.check():
                     yield event
             except Exception as e:
-                print('error', e)
+                print(e)
 
 def main():
     global vk_session
@@ -60,70 +60,71 @@ def main():
         print_report("Прослушивание запущено")
         for event in longpoll.listen():
             if event.type == VkBotEventType.MESSAGE_NEW:
+                peer_id = event.message['peer_id'] # откуда получено сообщение
                 print_report(event)
                 if event.from_chat:
                     if 'action' in event.message:
                         if (event.message['action']['type'] == 'chat_invite_user'
                         and event.message['action']['member_id'] == -198707501):
-                            new_invite(vk_api, event.chat_id)
+                            new_invite(vk_api, peer_id)
 
                     if event.message['text'] != '' and event.message['text'][0] == '/':
-                        parse_chat_msg(event)
+                        parse_chat_msg(event, peer_id)
 
                 elif event.from_user:
-                    parse_settings_msg(event)
+                    parse_settings_msg(event, peer_id)
 
-def parse_chat_msg(event):
+def parse_chat_msg(event, peer_id):
     msg_text = event.message['text'].lower()
     words_message = re.split("[, \-!?:]+", msg_text[1:])  #all words[] without first char /
     request = words_message[0]  # first word after /
     if request in ['help','помощь']:
-        send_msg_tochat(vk_api, event.chat_id, help_faq())
+        send_msg(vk_api, peer_id, help_faq())
     elif request in ['погода']:
         if 'завтра' in words_message:
-            send_msg_tochat(vk_api, event.chat_id, weather(tomorrow=True)[0])
+            send_msg(vk_api, peer_id, weather(tomorrow=True)[0])
         elif 'неделю' in words_message:
-            send_msg_tochat(vk_api, event.chat_id, weather(week=True)[0])
+            send_msg(vk_api, peer_id, weather(week=True)[0])
         else:
-            send_msg_tochat(vk_api, event.chat_id, weather()[0])
+            send_msg(vk_api, peer_id, weather()[0])
 
     elif request in ['неделя']:
         if 'завтра' in words_message:
-            send_msg_tochat(vk_api, event.chat_id, how_week(tomorrow=True))
+            send_msg(vk_api, peer_id, how_week(tomorrow=True))
         else:
-            send_msg_tochat(vk_api, event.chat_id, how_week())
+            send_msg(vk_api, peer_id, how_week())
 
 
     elif request in ['автобус']:
-        send_msg_tochat(vk_api, event.chat_id, message="Ищем расписание вашего автобуса, ожидайте...")
+        send_msg(vk_api, peer_id, message="Ищем расписание вашего автобуса, ожидайте...")
         byte_screen = get_byte_screen_schedule_bus(msg_text[1:])
         if not byte_screen is None:
             attachment = get_attachment(vk_api, byte_screen)
             if not attachment is None:
-                send_msg_tochat(vk_api, event.chat_id, attachment=attachment)
+                send_msg(vk_api, peer_id, attachment=attachment)
         else:
-            send_msg_tochat(vk_api, event.chat_id, message='Не получилось получить информацию о вашем автобусе, не расстраивайтесь :)')
+            send_msg(vk_api, peer_id, message='Не получилось получить информацию о вашем автобусе, не расстраивайтесь :)')
 
     elif request in ['ссылки']:
-        send_msg_tochat(vk_api, event.chat_id, message=get_zoom_links())
+        send_msg(vk_api, peer_id, message=get_zoom_links(peer_id))
 
     elif request in ['курсы']:
-        send_msg_tochat(vk_api, event.chat_id, message=get_courses(event.chat_id))
+        send_msg(vk_api, peer_id, message=get_courses(peer_id))
 
     elif request in ['пары']:
         if 'завтра' in words_message:
-            send_msg_tochat(vk_api, event.chat_id, message=info_about_lessons(tomorrow=True))
+            send_msg(vk_api, peer_id, message=info_about_lessons(peer_id, tomorrow=True))
         else:
-            send_msg_tochat(vk_api, event.chat_id, message=info_about_lessons())
+            send_msg(vk_api, peer_id, message=info_about_lessons(peer_id))
 
     elif request in ['настройка']:
-        settings_session(vk_api=vk_api, chat_id=event.chat_id, user_sender_id=event.message.from_id)
+        settings_session(vk_api=vk_api, chat_id=peer_id, user_sender_id=event.message.from_id)
     else:
-        send_msg_tochat(vk_api,event.chat_id,
+        send_msg(vk_api, peer_id,
                         message='Такой команды не найдено :( Попробуйте на писать /help для того, чтобы ознакомится со списком команд')
 
 
-def parse_settings_msg(event):
+def parse_settings_msg(event, peer_id):
     # Форма сообщения /КОМАНДА ID_CHAT PARAMS
     words_message = re.split("[, \-!?:]+", event.message['text'][1:])  #all words[] without first char /
     request = words_message[0]  # first word after /
@@ -134,9 +135,9 @@ def parse_settings_msg(event):
                 chat_id, title, link, password = finded_params[0]
                 res = create_new_course(chat_id, title, link, password)
                 if res:
-                    send_msg_touser(vk_api, event.message['from_id'], "Ваш курс успешно сохранён")
+                    send_msg(vk_api, peer_id, "Ваш курс успешно сохранён")
             else:
-                send_msg_touser(vk_api, event.message['from_id'], "Извините,вы где-то ошиблись")
+                send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
 
         if 'ссылку' in words_message:
             finded_params = re.findall(r'.* (\d{10}) (.+) (.+) (.+)', event.message['text'])
@@ -144,7 +145,7 @@ def parse_settings_msg(event):
                 chat_id, title, link, password = finded_params[0]
                 create_new_link(chat_id, title, link, password)
             else:
-                send_msg_touser(vk_api, event.message['from_id'], "Извините,вы где-то ошиблись")
+                send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
 
     elif request in ['расписание']:
         pass
@@ -154,15 +155,15 @@ def parse_settings_msg(event):
 
 def wait_time():
     print_report("Временной таймер для спама запущен")
-    list_ids_chats_for_spam = [2,5]
+    list_ids_chats_for_spam = [2000000005]
     while True:
         izhevsk_utc_date = regional_datetime(delta_hours=4)
         if(izhevsk_utc_date.hour == 8 and izhevsk_utc_date.minute == 0):
             for id in list_ids_chats_for_spam:
-                send_msg_tochat(vk_api, id, info_for_the_day())
+                send_msg(vk_api, id, info_for_the_day())
         elif(izhevsk_utc_date.hour == 20 and izhevsk_utc_date.minute == 0):
             for id in list_ids_chats_for_spam:
-                send_msg_tochat(vk_api, id, info_for_the_day(tomorrow=True))
+                send_msg(vk_api, id, info_for_the_day(tomorrow=True))
         time.sleep(60)
 
 

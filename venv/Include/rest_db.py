@@ -150,12 +150,18 @@ def set_schedule(chat_id, schedule):
 		schedule_ref.set(schedule)
 
 
-def get_pairs_on_day(chat_id, day, week_type):
+def get_pairs_on_day(chat_id, weekday, week_type):
+	"""
+	:param chat_id: 
+	:param weekday: день недели, на русском, с большой буквы (Понедельник)
+	:param week_type: тип недели, на русском, с малой буквы (под, над)
+	:return: Список пар, если пар нет или на такой день нет расписания вернёт None
+	"""
 	ref = db.reference("/Chats/{}".format(chat_id))
 	if ref.get():
 		schedule_ref = ref.child("settings/schedule")
 		if schedule_ref.get():
-			pairs_day_ref = schedule_ref.child(day)
+			pairs_day_ref = schedule_ref.child(weekday)
 			if pairs_day_ref.get():
 				pairs = filter(lambda x: x['week_type'] == week_type or x['week_type'] == "оба", pairs_day_ref.get())
 				sorted_pairs = sorted(list(pairs), key=lambda x: x['num_pair'])
