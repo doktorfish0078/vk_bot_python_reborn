@@ -1,8 +1,8 @@
 import datetime
 
-import Include.rest_db as rest_db
-from Include.helpers.regional_datetime import regional_datetime
-from Include.commands.how_week import how_week
+import rest_db as rest_db
+from helpers.regional_datetime import regional_datetime
+from commands.how_week import how_week
 
 
 class Study_day(object):
