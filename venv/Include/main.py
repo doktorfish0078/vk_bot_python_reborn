@@ -1,10 +1,8 @@
 import os
 import sys
 import threading
-import datetime
 import time
 import re
-import requests
 
 from vk_api import VkApi
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
@@ -155,7 +153,7 @@ def parse_settings_msg(event, peer_id):
 
 def wait_time():
     print_report("Временной таймер для спама запущен")
-    list_ids_chats_for_spam = [2000000005]
+    list_ids_chats_for_spam = rest_db.get_all_chats_id()
     while True:
         izhevsk_utc_date = regional_datetime(delta_hours=4)
         if(izhevsk_utc_date.hour == 8 and izhevsk_utc_date.minute == 0):

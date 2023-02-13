@@ -168,16 +168,23 @@ def get_pairs_on_day(chat_id, weekday, week_type):
 				return sorted_pairs
 	return None
 
+def get_all_chats_id():
+	ref = db.reference("/Chats")
+	if ref.get():
+		return list(ref.get().keys())
+
+	return []
+
 # create_new_chat("2000000002")
 # add_new_course("2000000005", "НИР", "https://ee.istu.ru/course/view.php?id=5807", "ПрактикаНИР_АСОИУ")
 # add_new_course("2000000005", "ПМП", "https://ee.istu.ru/course/view.php?id=4572", "-")
 # delete_course("2000000005", delete_all=True)
 # update_course("2000000005", "NNml2IdbVUtMje_t-Du", "Научная исследовательская работа", "https://ee.istu.ru/course/view.php?id=5807", "НИР_АСОИУ")
 # set_time_delta("2000000005", 5)
-
+#
 # with open("schedule.json", "r", encoding="utf8") as f:
 # 	file_contents = json.load(f)
-# set_schedule("2000000005", schedule=file_contents)
+# set_schedule("2000000002", schedule=file_contents)
 # print(get_pairs_on_day("2000000005", "Понедельник", "под"))
 # print(get_pairs_on_day("2000000005", "Вторник", "под"))
 # print(get_pairs_on_day("2000000005", "Среда", "под"))
@@ -190,3 +197,4 @@ def get_pairs_on_day(chat_id, weekday, week_type):
 # update_link("2000000005", "-NNqHsFDdlRHbXr1_UpN", "Научная исследовательская работа", "https://ee.istu.ru/course/view.php?id=5807", "НИР_АСОИУ")
 
 # get_all_chats()
+# print(get_all_chats_id())
