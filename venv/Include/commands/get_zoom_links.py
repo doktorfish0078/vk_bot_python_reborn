@@ -1,4 +1,4 @@
-import Include.rest_db as rest_db
+import rest_db as rest_db
 
 def get_zoom_links(peer_id):
     links = rest_db.get_all_links(peer_id)

@@ -1,9 +1,7 @@
-from Include.helpers.server_notification import print_report
-from Include.helpers.messages import send_msg_touser
+from helpers.server_notification import print_report
+from helpers.messages import send_msg_touser
 
 def settings_session(vk_api, chat_id, user_sender_id):
-    chat_id = 2000000000 + chat_id
-
     if not check_user_for_admin_rights(vk_api, chat_id, user_sender_id):
         send_msg_touser(vk_api, user_sender_id, "Вы не имеете прав администратора в этой беседе")
         return 0

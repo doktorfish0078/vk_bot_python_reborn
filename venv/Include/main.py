@@ -4,35 +4,35 @@ import threading
 import time
 import re
 
+
+from commands.welcome import welcome_msg
+from commands.weather import weather
+from commands.animes import get_top
+from commands.how_week import how_week
+from commands.info_for_the_day import info_for_the_day
+from commands.schedule_bus import get_byte_screen_schedule_bus
+from commands.upload_bin_img_on_vk import get_attachment
+from commands.help_faq import help_faq
+from commands.skirmish import skirmish
+from commands.punish import punish
+from commands.couple import couple
+from commands.get_courses import get_courses
+from commands.get_zoom_links import get_zoom_links
+from commands.info_about_lesson import info_about_lessons
+from commands.setting_bot import settings_session
+from commands.create_new_course import create_new_course
+from commands.create_new_link import create_new_link
+from commands.new_invite import new_invite
+
+from helpers.regional_datetime import regional_datetime
+from helpers.messages import send_msg, send_msg
+from helpers.server_notification import print_report
+
+import rest_db as rest_db
+
+
 from vk_api import VkApi
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
-
-
-from Include.commands.welcome import welcome_msg
-from Include.commands.weather import weather
-from Include.commands.animes import get_top
-from Include.commands.how_week import how_week
-from Include.commands.info_for_the_day import info_for_the_day
-from Include.commands.schedule_bus import get_byte_screen_schedule_bus
-from Include.commands.upload_bin_img_on_vk import get_attachment
-from Include.commands.help_faq import help_faq
-from Include.commands.skirmish import skirmish
-from Include.commands.punish import punish
-from Include.commands.couple import couple
-from Include.commands.get_courses import get_courses
-from Include.commands.get_zoom_links import get_zoom_links
-from Include.commands.info_about_lesson import info_about_lessons
-from Include.commands.setting_bot import settings_session
-from Include.commands.create_new_course import create_new_course
-from Include.commands.create_new_link import create_new_link
-from Include.commands.new_invite import new_invite
-
-from Include.helpers.regional_datetime import regional_datetime
-from Include.helpers.messages import send_msg, send_msg
-from Include.helpers.server_notification import print_report
-
-import Include.rest_db as rest_db
-
 
 token = 'e94dbd6b9db4af4afd0cde9f0f7be84922aa1d01a34734a533a878650f493d596459b2d87cef2c7128110'
 group_id = '198707501'
@@ -128,7 +128,7 @@ def parse_settings_msg(event, peer_id):
     request = words_message[0]  # first word after /
     if request in ['добавить']:
         if 'курс' in words_message:
-            finded_params = re.findall(r'.* (\d{10}) (.+) (.+) (.+)', event.message['text'])
+            finded_params = re.findall(r'.* (\d{10}) (.+) (.+) (.+)', event.message['text']) # Нужно сделать регулярку лучше
             if finded_params:
                 chat_id, title, link, password = finded_params[0]
                 res = create_new_course(chat_id, title, link, password)
@@ -138,7 +138,7 @@ def parse_settings_msg(event, peer_id):
                 send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
 
         if 'ссылку' in words_message:
-            finded_params = re.findall(r'.* (\d{10}) (.+) (.+) (.+)', event.message['text'])
+            finded_params = re.findall(r'.* (\d{10}) (.+) (.+) (.+)', event.message['text']) # Нужно сделать регулярку лучше
             if finded_params:
                 chat_id, title, link, password = finded_params[0]
                 create_new_link(chat_id, title, link, password)

@@ -3,10 +3,11 @@ from firebase_admin import credentials, db, firestore
 import json
 
 
-cred = credentials.Certificate("serviceAccountKey.json")
-app = firebase_admin.initialize_app(cred, {
-    'databaseURL': "https://studingbot-cf957-default-rtdb.europe-west1.firebasedatabase.app/"
-})
+if not firebase_admin._apps:
+	cred = credentials.Certificate("serviceAccountKey.json")
+	app = firebase_admin.initialize_app(cred, {
+		'databaseURL': "https://studingbot-cf957-default-rtdb.europe-west1.firebasedatabase.app/"
+	})
 
 
 def create_new_chat(chat_id):

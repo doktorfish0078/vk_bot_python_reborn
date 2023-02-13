@@ -1,4 +1,4 @@
-import Include.rest_db as rest_db
+import rest_db as rest_db
 
 def get_courses(peer_id):
     """
