@@ -18,6 +18,7 @@ def check_user_for_admin_rights(vk_api, chat_id, user_id):
     members_chat = vk_api.messages.getConversationMembers(peer_id=chat_id)
     for i in range(0, members_chat['count']):
         member = members_chat['items'][i]
-        if member['member_id'] == user_id and member['is_admin'] == True:
-            return True
+        if member['member_id'] == user_id:
+            if "is_admin" in member:
+                return member['is_admin']
     return False
