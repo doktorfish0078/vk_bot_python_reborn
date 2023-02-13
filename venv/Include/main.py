@@ -34,9 +34,6 @@ import rest_db as rest_db
 from vk_api import VkApi
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 
-token = 'e94dbd6b9db4af4afd0cde9f0f7be84922aa1d01a34734a533a878650f493d596459b2d87cef2c7128110'
-group_id = '198707501'
-
 
 class MyVkLongPoll(VkBotLongPoll):
     def listen(self):
@@ -47,30 +44,43 @@ class MyVkLongPoll(VkBotLongPoll):
             except Exception as e:
                 print(e)
 
-def main():
-    global vk_session
-    global vk_api
+def init_session():
+    token = 'e94dbd6b9db4af4afd0cde9f0f7be84922aa1d01a34734a533a878650f493d596459b2d87cef2c7128110'
+    group_id = '198707501'
 
     vk_session = VkApi(token=token)
     longpoll = MyVkLongPoll(vk_session, group_id, wait=25)
     vk_api = vk_session.get_api()
+
+    return vk_api, longpoll
+
+def main():
     while True:
-        print_report("Прослушивание запущено")
-        for event in longpoll.listen():
-            if event.type == VkBotEventType.MESSAGE_NEW:
-                peer_id = event.message['peer_id'] # откуда получено сообщение
-                print_report(event)
-                if event.from_chat:
-                    if 'action' in event.message:
-                        if (event.message['action']['type'] == 'chat_invite_user'
-                        and event.message['action']['member_id'] == -198707501):
-                            new_invite(vk_api, peer_id)
+        try:
+            global vk_api
+            vk_api, longpoll = init_session()
 
-                    if event.message['text'] != '' and event.message['text'][0] == '/':
-                        parse_chat_msg(event, peer_id)
+            print_report("Прослушивание запущено")
+            for event in longpoll.listen():
+                if event.type == VkBotEventType.MESSAGE_NEW:
+                    peer_id = event.message['peer_id'] # откуда получено сообщение
+                    print_report(event)
+                    if event.from_chat:
+                        if 'action' in event.message:
+                            if (event.message['action']['type'] == 'chat_invite_user'
+                            and event.message['action']['member_id'] == -198707501):
+                                new_invite(vk_api, peer_id)
 
-                elif event.from_user:
-                    parse_settings_msg(event, peer_id)
+                        if event.message['text'] != '' and event.message['text'][0] == '/':
+                            parse_chat_msg(event, peer_id)
+
+                    elif event.from_user:
+                        parse_settings_msg(event, peer_id)
+        except Exception as error:
+            print_report(error)
+            time.sleep(0.3)
+            continue
+
 
 def parse_chat_msg(event, peer_id):
     msg_text = event.message['text'].lower()
@@ -153,15 +163,15 @@ def parse_settings_msg(event, peer_id):
 
 def wait_time():
     print_report("Временной таймер для спама запущен")
-    list_ids_chats_for_spam = rest_db.get_all_chats_id()
+    ids_chats = rest_db.get_all_chats_id()
     while True:
-        izhevsk_utc_date = regional_datetime(delta_hours=4)
-        if(izhevsk_utc_date.hour == 8 and izhevsk_utc_date.minute == 0):
-            for id in list_ids_chats_for_spam:
-                send_msg(vk_api, id, info_for_the_day())
-        elif(izhevsk_utc_date.hour == 20 and izhevsk_utc_date.minute == 0):
-            for id in list_ids_chats_for_spam:
-                send_msg(vk_api, id, info_for_the_day(tomorrow=True))
+        izh_date = regional_datetime(delta_hours=4)
+        if izh_date.hour == 8 and izh_date.minute == 0:
+            for id in ids_chats:
+                send_msg(vk_api, id, info_for_the_day(id))
+        elif izh_date.hour == 20 and izh_date.minute == 0:
+            for id in ids_chats:
+                send_msg(vk_api, id, info_for_the_day(id, tomorrow=True))
         time.sleep(60)
 
 
@@ -170,7 +180,7 @@ if __name__ == '__main__':
     waiter_thread = threading.Thread(target=wait_time)
 
     listener_thread.start()
-    time.sleep(5)
+    time.sleep(3)
     waiter_thread.start()
 
 
