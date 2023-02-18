@@ -5,22 +5,6 @@ from helpers.regional_datetime import regional_datetime
 from commands.how_week import how_week
 
 
-class Study_day(object):
-    def __init__(self, day_of_the_week):
-        self.day_of_the_week = day_of_the_week
-        self.lessons = []
-
-class Lesson(object):
-    def __init__(self, week, num, type, name, teacher, room):
-        self.week = week
-        self.num = num
-        self.type = type
-        self.name = name
-        self.teacher = teacher
-        self.room = room
-
-
-
 lesson_type = {
     1: 'Лекция',
     2: 'Практика',

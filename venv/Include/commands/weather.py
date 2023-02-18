@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 
+from helpers.server_notification import print_report
+
 weather_type = {
     "Пасмурно": "☁️☁️☁️",
     "Ясно": "☀️",
@@ -60,5 +62,5 @@ def weather(tomorrow=False, week=False):
         return result_weather
 
     except BaseException as error:
-        print(error)
+        print_report(f'Weather: {error}')
         return ("Не удалось получить погоду :(", "Err")

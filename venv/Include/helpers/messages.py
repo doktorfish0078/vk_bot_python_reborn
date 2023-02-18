@@ -19,8 +19,8 @@ def send_msg(vk_api, peer_id, message=None, attachment=None):
             response = vk_api.messages.send(peer_id=peer_id, message=message,attachment=attachment, random_id= randint(0, 2048))
             return response
         except Exception as error:
-            print_report(error)
-            time.sleep(0.5)
+            print_report(f'Send msg attempt №{attempt_no}: {error}')
+            time.sleep(0.3)
             continue
     return None # Хз что возвращать лучше,если не получилась отправка
 

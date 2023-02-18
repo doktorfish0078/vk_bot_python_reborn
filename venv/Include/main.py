@@ -3,6 +3,7 @@ import sys
 import threading
 import time
 import re
+import traceback
 
 
 from commands.welcome import welcome_msg
@@ -42,7 +43,7 @@ class MyVkLongPoll(VkBotLongPoll):
                 for event in self.check():
                     yield event
             except Exception as e:
-                print(e)
+                print_report(f'Longpool: {e}', traceback=traceback.format_exc())
 
 def init_session():
     token = 'e94dbd6b9db4af4afd0cde9f0f7be84922aa1d01a34734a533a878650f493d596459b2d87cef2c7128110'
@@ -77,7 +78,7 @@ def main():
                     elif event.from_user:
                         parse_settings_msg(event, peer_id)
         except Exception as error:
-            print_report(error)
+            print_report(f'Main Thread: {error}', traceback=traceback.format_exc())
             time.sleep(0.3)
             continue
 
@@ -166,12 +167,17 @@ def wait_time():
     ids_chats = rest_db.get_all_chats_id()
     while True:
         izh_date = regional_datetime(delta_hours=4)
-        if izh_date.hour == 8 and izh_date.minute == 0:
-            for id in ids_chats:
-                send_msg(vk_api, id, info_for_the_day(id))
-        elif izh_date.hour == 20 and izh_date.minute == 0:
-            for id in ids_chats:
-                send_msg(vk_api, id, info_for_the_day(id, tomorrow=True))
+        # current_time = f'{izh_date.hour}:{izh_date.minute}'
+        current_time = f'{izh_date.minute}'
+        times_for_spam = ['25','45','01']
+        # if izh_date.hour == 8 and izh_date.minute == 0:
+        #     for id in ids_chats:
+        #         send_msg(vk_api, id, info_for_the_day(id))
+        # elif izh_date.hour == 20 and izh_date.minute == 0:
+        #     for id in ids_chats:
+        #         send_msg(vk_api, id, info_for_the_day(id, tomorrow=True))
+        if current_time in times_for_spam:
+            send_msg(vk_api, "2000000005", info_for_the_day("2000000005"))
         time.sleep(60)
 
 
