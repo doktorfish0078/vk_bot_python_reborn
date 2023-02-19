@@ -167,17 +167,18 @@ def wait_time():
     ids_chats = rest_db.get_all_chats_id()
     while True:
         izh_date = regional_datetime(delta_hours=4)
-        # current_time = f'{izh_date.hour}:{izh_date.minute}'
-        current_time = f'{izh_date.minute}'
-        times_for_spam = ['25','45','01']
-        # if izh_date.hour == 8 and izh_date.minute == 0:
-        #     for id in ids_chats:
-        #         send_msg(vk_api, id, info_for_the_day(id))
-        # elif izh_date.hour == 20 and izh_date.minute == 0:
-        #     for id in ids_chats:
-        #         send_msg(vk_api, id, info_for_the_day(id, tomorrow=True))
-        if current_time in times_for_spam:
-            send_msg(vk_api, "2000000005", info_for_the_day("2000000005"))
+        current_time = f'{izh_date.hour}:{izh_date.minute}'
+        # current_time = f'{izh_date.minute}'
+        # times_for_spam = ['8:0','20:0']
+        # if current_time in times_for_spam:
+        #     send_msg(vk_api, "2000000005", info_for_the_day("2000000005"))
+        if current_time == '8:0':
+            for id in ids_chats:
+                send_msg(vk_api, id, info_for_the_day(id))
+        elif current_time == '20:0':
+            for id in ids_chats:
+                send_msg(vk_api, id, info_for_the_day(id, tomorrow=True))
+
         time.sleep(60)
 
 
