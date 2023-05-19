@@ -4,6 +4,8 @@ import threading
 import time
 import re
 import traceback
+import requests
+import json
 
 from commands.welcome import welcome_msg
 from commands.weather import weather
@@ -25,6 +27,7 @@ from commands.create_new_link import create_new_link
 from commands.set_time_delta import set_time_delta
 from commands.set_town import set_town
 from commands.set_spam_options import set_spam_options
+from commands.set_schedule import set_schedule
 from commands.new_invite import new_invite
 
 from helpers.regional_datetime import regional_datetime
@@ -105,7 +108,6 @@ def parse_chat_msg(event, peer_id):
         else:
             send_msg(vk_api, peer_id, how_week())
 
-
     elif request in ['автобус']:
         send_msg(vk_api, peer_id, message="Ищем расписание вашего автобуса, ожидайте...")
         byte_screen = get_byte_screen_schedule_bus(msg_text[1:])
@@ -172,6 +174,20 @@ def parse_settings_msg(event, peer_id):
                     send_msg(vk_api, peer_id, "Рассылка настроена")
             else:
                 send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
+        elif 'расписание' in event.message['text']:
+            finded_params = re.findall(r'.* (\d{10})', event.message['text'])
+            if finded_params:
+                chat_id = finded_params[0]
+            if event.message.attachments != []:
+                url = event.message.attachments[0]['doc']['url']
+                response = requests.get(url)
+                decoded_data = response.content.decode('utf-8')  # декодируем байтовую строку в строку
+                schedule_data = json.loads(decoded_data)  # декодируем строку в формат JSON
+                res = set_schedule(chat_id, schedule_data)
+                if res:
+                    send_msg(vk_api, peer_id, "Расписание установлено")
+            else:
+                send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
     elif request in ['добавить']:
         if 'курс' in words_message:
             finded_params = re.findall(r'.* (\d{10}) (.+) (.+) (.+)', event.message['text']) # Нужно сделать регулярку лучше
@@ -193,8 +209,6 @@ def parse_settings_msg(event, peer_id):
             else:
                 send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
     elif request in ['задать']:
-        if 'расписание' in words_message:
-            print(event.message['attachments'])
         if 'неделю' in words_message:
             pass
 
