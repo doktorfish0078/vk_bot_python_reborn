@@ -5,7 +5,6 @@ import time
 import re
 import traceback
 
-
 from commands.welcome import welcome_msg
 from commands.weather import weather
 from commands.animes import get_top
@@ -23,6 +22,7 @@ from commands.info_about_lesson import info_about_lessons
 from commands.setting_bot import settings_session
 from commands.create_new_course import create_new_course
 from commands.create_new_link import create_new_link
+from commands.set_time_delta import set_time_delta
 from commands.new_invite import new_invite
 
 from helpers.regional_datetime import regional_datetime
@@ -137,14 +137,25 @@ def parse_settings_msg(event, peer_id):
     # Форма сообщения /КОМАНДА ID_CHAT PARAMS
     words_message = re.split("[, \-!?:]+", event.message['text'][1:])  #all words[] without first char /
     request = words_message[0]  # first word after /
-    if request in ['добавить']:
+    if request in ['настроить']:
+        if 'часовой пояс' in event.message['text']:#
+            finded_params = re.findall(r'.* (\d{10}) ([-+]?\d+)', event.message['text'])
+
+            if finded_params:
+                chat_id, time_delta = finded_params[0]
+                res = set_time_delta(chat_id, int(time_delta))
+                if res:
+                    send_msg(vk_api, peer_id, "Часовой пояс настроен")
+            else:
+                send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
+    elif request in ['добавить']:
         if 'курс' in words_message:
             finded_params = re.findall(r'.* (\d{10}) (.+) (.+) (.+)', event.message['text']) # Нужно сделать регулярку лучше
             if finded_params:
                 chat_id, title, link, password = finded_params[0]
                 res = create_new_course(chat_id, title, link, password)
                 if res:
-                    send_msg(vk_api, peer_id, "Ваш курс успешно сохранён")
+                    send_msg(vk_api, peer_id, "Ваш курс добавлен")
             else:
                 send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
 
@@ -152,13 +163,14 @@ def parse_settings_msg(event, peer_id):
             finded_params = re.findall(r'.* (\d{10}) (.+) (.+) (.+)', event.message['text']) # Нужно сделать регулярку лучше
             if finded_params:
                 chat_id, title, link, password = finded_params[0]
-                create_new_link(chat_id, title, link, password)
+                res = create_new_link(chat_id, title, link, password)
+                if res:
+                    send_msg(vk_api, peer_id, "Ваша ссылка на видеоконференцию добавлена")
             else:
                 send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
-
-    elif request in ['расписание']:
-        pass
     elif request in ['задать']:
+        if 'расписание' in words_message:
+            print(event.message['attachments'])
         if 'неделю' in words_message:
             pass
 
