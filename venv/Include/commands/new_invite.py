@@ -1,4 +1,4 @@
-from helpers.messages import send_msg_tochat
+from helpers.messages import send_msg
 from commands.help_faq import help_faq
 import rest_db as rest_db
 
@@ -12,9 +12,9 @@ def new_invite(vk_api, peer_id):
     :return:
     """
 
-    send_msg_tochat(vk_api, peer_id, "Всех приветствую, рад познакомиться!")
-    send_msg_tochat(vk_api, peer_id, help_faq())
-    all_chats = rest_db.get_all_chats()
-    if peer_id not in all_chats:
-        rest_db.create_new_chat(full_chat_id)
-        send_msg_tochat(vk_api, peer_id, "Чтобы я мог полноценно функционировать в вашей беседе, пожалуйста, выдайте мне права администратора беседы")
+    send_msg(vk_api, peer_id, "Всех приветствую, рад познакомиться!")
+    send_msg(vk_api, peer_id, help_faq())
+    all_chats_ids = rest_db.get_all_chats_id()
+    if peer_id not in all_chats_ids:
+        rest_db.create_new_chat(peer_id)
+        send_msg(vk_api, peer_id, "Чтобы я мог полноценно функционировать в вашей беседе, пожалуйста, выдайте мне права администратора беседы")

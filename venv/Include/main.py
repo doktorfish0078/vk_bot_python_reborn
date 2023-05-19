@@ -23,6 +23,8 @@ from commands.setting_bot import settings_session
 from commands.create_new_course import create_new_course
 from commands.create_new_link import create_new_link
 from commands.set_time_delta import set_time_delta
+from commands.set_town import set_town
+from commands.set_spam_options import set_spam_options
 from commands.new_invite import new_invite
 
 from helpers.regional_datetime import regional_datetime
@@ -138,7 +140,7 @@ def parse_settings_msg(event, peer_id):
     words_message = re.split("[, \-!?:]+", event.message['text'][1:])  #all words[] without first char /
     request = words_message[0]  # first word after /
     if request in ['настроить']:
-        if 'часовой пояс' in event.message['text']:#
+        if 'часовой пояс' in event.message['text']:
             finded_params = re.findall(r'.* (\d{10}) ([-+]?\d+)', event.message['text'])
 
             if finded_params:
@@ -146,6 +148,28 @@ def parse_settings_msg(event, peer_id):
                 res = set_time_delta(chat_id, int(time_delta))
                 if res:
                     send_msg(vk_api, peer_id, "Часовой пояс настроен")
+            else:
+                send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
+        elif 'город' in event.message['text']:
+            finded_params = re.findall(r'.* (\d{10}) (.+)', event.message['text'])
+            if finded_params:
+                chat_id, town = finded_params[0]
+                res = set_town(chat_id, town)
+                if res:
+                    send_msg(vk_api, peer_id, "Город настроен")
+            else:
+                send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
+        elif 'рассылку' in event.message['text']:
+            finded_params = re.findall(r'.* (\d{10}) погода=(да|нет) неделя=(да|нет) расписание=(да|нет)', event.message['text'])
+            if finded_params:
+
+                chat_id, weather, week, schedule = finded_params[0]
+                weather = weather == 'да' if True else False;
+                week = week == 'да' if True else False;
+                schedule = schedule == 'да' if True else False;
+                res = set_spam_options(chat_id, weather, week, schedule)
+                if res:
+                    send_msg(vk_api, peer_id, "Рассылка настроена")
             else:
                 send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
     elif request in ['добавить']:

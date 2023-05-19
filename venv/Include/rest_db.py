@@ -21,7 +21,6 @@ def trying_decorator(func): # стоит перенести куда-то отд
 		return None  # Хз что возвращать лучше,если не получилась
 	return wrapper
 
-
 def init_app():
 	if not firebase_admin._apps:
 		cred = credentials.Certificate("serviceAccountKey.json")
@@ -39,7 +38,13 @@ def create_new_chat(chat_id):
 				"schedule": -1,
 				"links": -1,
 				"courses": -1,
-				"time_delta": 4
+				"time_delta": 4,
+				"spam_options":{
+					"schedule": False,
+					"weather": False,
+					"week": False
+				},
+				"town":"Ижевск"
 			}
 		}
 	})
@@ -181,6 +186,12 @@ def set_time_delta(chat_id, value):
 		time_delta = ref.child("settings/time_delta")
 		time_delta.set(value)
 
+@trying_decorator
+def set_town(chat_id, town):
+	ref = db.reference("/Chats/{}".format(chat_id))
+	if ref.get():
+		town_ref = ref.child("settings/town")
+		town_ref.set(town)
 
 @trying_decorator
 def set_schedule(chat_id, schedule):
@@ -189,6 +200,12 @@ def set_schedule(chat_id, schedule):
 		schedule_ref = ref.child("settings/schedule")
 		schedule_ref.set(schedule)
 
+@trying_decorator
+def set_spam_options(chat_id, weather, week, schedule):
+	ref = db.reference("/Chats/{}".format(chat_id))
+	if ref.get():
+		spam_options_ref = ref.child("settings/spam_options")
+		spam_options_ref.set({"weather": weather, "week":week, "schedule":schedule})
 
 @trying_decorator
 def get_pairs_on_day(chat_id, weekday, week_type):
