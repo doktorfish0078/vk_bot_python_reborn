@@ -1,6 +1,6 @@
-from helpers.messages import send_msg
-from commands.help_faq import help_faq
-import rest_db as rest_db
+from Include.helpers import send_msg
+from Include.commands import help_faq
+import Include.rest_db as rest_db
 
 def new_invite(vk_api, peer_id):
     """

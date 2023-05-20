@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
-from helpers.server_notification import print_report
+from Include.helpers import print_report
 
 weather_type = {
     "Пасмурно": "☁️☁️☁️",

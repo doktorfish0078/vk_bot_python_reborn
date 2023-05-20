@@ -7,38 +7,36 @@ import traceback
 import requests
 import json
 
-from commands.welcome import welcome_msg
-from commands.weather import weather
-from commands.animes import get_top
-from commands.how_week import how_week
-from commands.info_for_the_day import info_for_the_day
-from commands.schedule_bus import get_byte_screen_schedule_bus
-from commands.upload_bin_img_on_vk import get_attachment
-from commands.help_faq import help_faq
-from commands.skirmish import skirmish
-from commands.punish import punish
-from commands.couple import couple
-from commands.get_courses import get_courses
-from commands.get_zoom_links import get_zoom_links
-from commands.info_about_lesson import info_about_lessons
-from commands.setting_bot import settings_session
-from commands.create_new_course import create_new_course
-from commands.create_new_link import create_new_link
-from commands.set_time_delta import set_time_delta
-from commands.set_town import set_town
-from commands.set_spam_options import set_spam_options
-from commands.set_schedule import set_schedule
-from commands.new_invite import new_invite
+from Include.commands import create_new_course
+from Include.commands import create_new_link
+from Include.commands import get_courses
+from Include.commands import get_zoom_links
+from Include.commands import help_faq
+from Include.commands import how_week
+from Include.commands import info_about_lessons
+from Include.commands import info_for_the_day
+from Include.commands import new_invite
+from Include.commands import get_byte_screen_schedule_bus
+from Include.commands import weather
+from Include.commands import get_top
+from Include.commands import get_attachment
+from Include.commands import skirmish
+from Include.commands import punish
+from Include.commands import couple
+from Include.commands import settings_session
+from Include.commands import set_time_delta
+from Include.commands import set_town
+from Include.commands import set_spam_options
+from Include.commands import set_schedule
 
-from helpers.regional_datetime import regional_datetime
-from helpers.messages import send_msg, send_msg
-from helpers.server_notification import print_report
-
-import rest_db as rest_db
-
+from Include.helpers import regional_datetime
+from Include.helpers import send_msg
+from Include.helpers import print_report
 
 from vk_api import VkApi
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
+
+import rest_db as rest_db
 
 
 class MyVkLongPoll(VkBotLongPoll):

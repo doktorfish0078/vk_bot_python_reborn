@@ -1,4 +1,4 @@
-import rest_db as rest_db
+import Include.rest_db as rest_db
 
 def create_new_course(chat_id, title, link, password):
     try:

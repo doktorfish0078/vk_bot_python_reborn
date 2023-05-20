@@ -1,6 +1,6 @@
-from helpers.server_notification import print_report
-from helpers.messages import send_msg_touser
-from helpers.decorators import trying_decorator
+from Include.helpers import print_report
+from Include.helpers import send_msg_touser
+from Include.helpers import trying_decorator
 
 def settings_session(vk_api, chat_id, user_sender_id):
     if not check_user_for_admin_rights(vk_api, chat_id, user_sender_id):

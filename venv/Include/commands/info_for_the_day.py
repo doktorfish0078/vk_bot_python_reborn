@@ -2,13 +2,13 @@ import os
 import sys
 import datetime
 
-from commands.weather import weather
-from commands.how_week import how_week
-from commands.info_about_lesson import info_about_lessons
+from Include.commands import weather
+from Include.commands import how_week
+from Include.commands import info_about_lessons
 
-from helpers.regional_datetime import regional_datetime
+from Include.helpers import regional_datetime
 
-import rest_db as rest_db
+import Include.rest_db as rest_db
 
 
 def info_for_the_day(peer_id, tomorrow = False):

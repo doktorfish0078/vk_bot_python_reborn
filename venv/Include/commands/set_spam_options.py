@@ -1,4 +1,4 @@
-import rest_db as rest_db
+import Include.rest_db as rest_db
 
 def set_spam_options(chat_id, weather, week, schedule):
     try:

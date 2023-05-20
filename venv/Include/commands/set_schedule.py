@@ -1,4 +1,4 @@
-import rest_db as rest_db
+import Include.rest_db as rest_db
 
 def set_schedule(chat_id, schedule):
     try:

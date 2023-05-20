@@ -4,7 +4,7 @@ import json
 import traceback
 import time
 
-from helpers.server_notification import print_report
+from Include.helpers import print_report
 
 def trying_decorator(func): # стоит перенести куда-то отдельно как инструмент
 	count_retries = 2
