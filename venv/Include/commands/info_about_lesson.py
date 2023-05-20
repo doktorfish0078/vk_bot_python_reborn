@@ -34,7 +34,7 @@ def info_about_lessons(peer_id, tomorrow=None, any_day=None):
         izhevsk_utc_date += datetime.timedelta(days=1)
         result = 'Пары на завтра:\n'
 
-    num_day = (int)(izhevsk_utc_date.strftime('%w')) - 1 # потому что у америконсов 0 - воскресенье,а 6 - суббота, а нам бы хотелось чтобы 0 - понедельник 6 -воскресенье.
+    num_day = (int)(izhevsk_utc_date.weekday())
 
     weekday = WEEKDAYS[num_day]
     week_type = 'под' if how_week(tomorrow=tomorrow, boolean=True) else 'над'

@@ -19,3 +19,4 @@ from .set_time_delta import set_time_delta
 from .set_town import set_town
 from .set_spam_options import set_spam_options
 from .set_schedule import set_schedule
+from .create_new_event import create_new_event

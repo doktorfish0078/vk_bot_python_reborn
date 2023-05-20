@@ -28,6 +28,7 @@ from Include.commands import set_time_delta
 from Include.commands import set_town
 from Include.commands import set_spam_options
 from Include.commands import set_schedule
+from Include.commands import create_new_event
 
 from Include.helpers import regional_datetime
 from Include.helpers import send_msg
@@ -122,7 +123,7 @@ def parse_chat_msg(event, peer_id):
     elif request in ['курсы']:
         send_msg(vk_api, peer_id, message=get_courses(peer_id))
 
-    elif request in ['пары']:
+    elif request in ['расписание']:
         if 'завтра' in words_message:
             send_msg(vk_api, peer_id, message=info_about_lessons(peer_id, tomorrow=True))
         else:
@@ -130,6 +131,17 @@ def parse_chat_msg(event, peer_id):
 
     elif request in ['настройка']:
         settings_session(vk_api=vk_api, chat_id=peer_id, user_sender_id=event.message.from_id)
+
+    elif request in ['добавить']:
+        if 'мероприятие' in event.message['text']:
+            finded_params = re.findall(r'.* (\d{1,2}\.\d{1,2}\.\d{4}) (\d{1,2}:\d{1,2}) "(.*)"', event.message['text'])
+            if finded_params:
+                date, time, event_name = finded_params[0]
+                res = create_new_event(peer_id, date, time, event_name)
+                if res:
+                    send_msg(vk_api, peer_id, f"Ваше мероприятие {event_name} на {date} в {time} добавлено")
+            else:
+                send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
     else:
         send_msg(vk_api, peer_id,
                         message='Такой команды не найдено :( Попробуйте на писать /help для того, чтобы ознакомится со списком команд')
@@ -197,7 +209,7 @@ def parse_settings_msg(event, peer_id):
             else:
                 send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
 
-        if 'ссылку' in words_message:
+        elif 'ссылку' in words_message:
             finded_params = re.findall(r'.* (\d{10}) (.+) (.+) (.+)', event.message['text']) # Нужно сделать регулярку лучше
             if finded_params:
                 chat_id, title, link, password = finded_params[0]
@@ -212,21 +224,31 @@ def parse_settings_msg(event, peer_id):
 
 def wait_time():
     print_report("Временной таймер для спама запущен")
-    ids_chats = rest_db.get_all_chats_id()
     while True:
+        ids_chats = rest_db.get_all_chats_id()
         izh_date = regional_datetime(delta_hours=4)
-        current_time = f'{izh_date.hour}:{izh_date.minute}'
-        # current_time = f'{izh_date.minute}'
-        # times_for_spam = ['8:0','20:0']
-        # if current_time in times_for_spam:
-        #     send_msg(vk_api, "2000000005", info_for_the_day("2000000005"))
-        if current_time == '8:0':
-            for id in ids_chats:
-                send_msg(vk_api, id, info_for_the_day(id))
-        elif current_time == '20:0':
-            for id in ids_chats:
-                send_msg(vk_api, id, info_for_the_day(id, tomorrow=True))
-
+        curr_date = izh_date.strftime('%d.%m.%Y')
+        curr_time = izh_date.strftime('%H:%M')
+        for peer_id in ids_chats:
+            spam_options = rest_db.get_spam_options(peer_id)
+            if spam_options and peer_id=="2000000007":
+                if spam_options['schedule'] or spam_options['week'] or spam_options['weather']:
+                    if curr_time == '8:00':
+                        res = send_msg(vk_api, peer_id, info_for_the_day(peer_id, spam_options=spam_options))
+                        if res:
+                            print_report(f"Сообщение отправлено в чат {peer_id}")
+                    elif curr_time == '20:00':
+                        res = send_msg(vk_api, peer_id, info_for_the_day(peer_id, tomorrow=True, spam_options=spam_options))
+                        if res:
+                            print_report(f"Сообщение отправлено в чат {peer_id}")
+            events = rest_db.get_all_events(peer_id)
+            if events:
+                for event_id, event in events.items():
+                    if event['date'] == curr_date and event['time'] == curr_time:
+                        res = send_msg(vk_api, peer_id, f'Напоминаю о запланированном на {event["date"]} мероприятии "{event["event_name"]}", которое состоится в {event["time"]}"')
+                        if res:
+                            print_report(f"Сообщение о мероприятии отправлено в чат {peer_id}")
+                            rest_db.delete_event(peer_id, event_id)
         time.sleep(60)
 
 
@@ -235,7 +257,7 @@ if __name__ == '__main__':
     waiter_thread = threading.Thread(target=wait_time)
 
     listener_thread.start()
-    time.sleep(3)
+    time.sleep(1)
     waiter_thread.start()
 
 

@@ -121,9 +121,9 @@ def update_course(chat_id, course_id, title, link, password):
 def add_new_link(chat_id, title, link, password):
 	ref = db.reference("/Chats/{}".format(chat_id))
 	if ref.get():
-		ref_courses = ref.child('settings/links/')
+		ref_links = ref.child('settings/links/')
 
-		ref_courses.push({
+		ref_links.push({
 			"title": title,
 			"link": link,
 			"password": password
@@ -208,6 +208,14 @@ def set_spam_options(chat_id, weather, week, schedule):
 		spam_options_ref.set({"weather": weather, "week":week, "schedule":schedule})
 
 @trying_decorator
+def get_spam_options(chat_id):
+	ref = db.reference("/Chats/{}".format(chat_id))
+	if ref.get():
+		spam_options_ref = ref.child("settings/spam_options")
+		return spam_options_ref.get()
+	return None
+
+@trying_decorator
 def get_pairs_on_day(chat_id, weekday, week_type):
 	"""
 	:param chat_id: 
@@ -235,7 +243,30 @@ def get_all_chats_id():
 
 	return []
 
+@trying_decorator
+def add_new_event(chat_id, date, time, event_name):
+	ref = db.reference("/Chats/{}".format(chat_id))
+	if ref.get():
+		events_ref = ref.child("events")
+		events_ref.push({
+			"date": date,
+			"time": time,
+			"event_name": event_name,
+		})
 
+@trying_decorator
+def get_all_events(chat_id):
+	ref = db.reference("/Chats/{}".format(chat_id))
+	if ref.get():
+		events_ref = ref.child("events")
+		return events_ref.get()
+
+@trying_decorator
+def delete_event(chat_id, event_id):
+	ref = db.reference("/Chats/{}".format(chat_id))
+	if ref.get():
+		cur_event = ref.child(f'events/{event_id}')
+		cur_event.delete()
 
 init_app()
 
@@ -262,3 +293,5 @@ init_app()
 #
 # get_all_chats()
 # print(get_all_chats_id())
+
+# add_event("2000000007", "21.05.2023", "15:00", "КАЛЛ")
