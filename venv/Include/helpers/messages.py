@@ -22,7 +22,6 @@ def send_msg(vk_api, peer_id, message=None, attachment=None):
             print_report(f'Send msg attempt №{attempt_no}: {error}')
             time.sleep(0.3)
             continue
-    return None # Хз что возвращать лучше,если не получилась отправка
 
 def send_msg_tochat(vk_api, chat_id, message=None, attachment=None): # LEGACY
     """

@@ -245,8 +245,8 @@ def wait_time():
             if events:
                 for event_id, event in events.items():
                     if event['date'] == curr_date and event['time'] == curr_time:
-                        res = send_msg(vk_api, peer_id, f'Напоминаю о запланированном на {event["date"]} мероприятии "{event["event_name"]}", которое состоится в {event["time"]}"')
-                        if res:
+                        res = send_msg(vk_api, peer_id, f'Напоминаю о запланированном на {event["date"]} мероприятии "{event["event_name"]}", которое состоится в {event["time"]}')
+                        if res is not None:
                             print_report(f"Сообщение о мероприятии отправлено в чат {peer_id}")
                             rest_db.delete_event(peer_id, event_id)
         time.sleep(60)
