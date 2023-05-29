@@ -130,7 +130,7 @@ def parse_chat_msg(event, peer_id):
             send_msg(vk_api, peer_id, message=info_about_lessons(peer_id))
 
     elif request in ['настройка']:
-        settings_session(vk_api=vk_api, chat_id=peer_id, user_sender_id=event.message.from_id)
+        settings_session(vk_api=vk_api, peer_id=peer_id, user_sender_id=event.message.from_id)
 
     elif request in ['добавить']:
         if 'мероприятие' in event.message['text']:
@@ -153,39 +153,39 @@ def parse_settings_msg(event, peer_id):
     request = words_message[0]  # first word after /
     if request in ['настроить']:
         if 'часовой пояс' in event.message['text']:
-            finded_params = re.findall(r'.* (\d{10}) ([-+]?\d+)', event.message['text'])
+            finded_params = re.findall(r'.* (\d+) ([-+]?\d+)', event.message['text'])
 
             if finded_params:
                 chat_id, time_delta = finded_params[0]
-                res = set_time_delta(chat_id, int(time_delta))
+                res = set_time_delta(int(chat_id) + 2000000000, int(time_delta))
                 if res:
-                    send_msg(vk_api, peer_id, "Часовой пояс настроен")
+                    send_msg(vk_api, peer_id, f"Часовой пояс настроен на UTC {time_delta}")
             else:
                 send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
         elif 'город' in event.message['text']:
-            finded_params = re.findall(r'.* (\d{10}) (.+)', event.message['text'])
+            finded_params = re.findall(r'.* (\d+) (.+)', event.message['text'])
             if finded_params:
                 chat_id, town = finded_params[0]
-                res = set_town(chat_id, town)
+                res = set_town(int(chat_id) + 2000000000, town)
                 if res:
-                    send_msg(vk_api, peer_id, "Город настроен")
+                    send_msg(vk_api, peer_id, f'Город настроен на "{town}"')
             else:
                 send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
         elif 'рассылку' in event.message['text']:
-            finded_params = re.findall(r'.* (\d{10}) погода=(да|нет) неделя=(да|нет) расписание=(да|нет)', event.message['text'])
+            finded_params = re.findall(r'.* (\d+) погода=(да|нет) неделя=(да|нет) расписание=(да|нет)', event.message['text'])
             if finded_params:
 
                 chat_id, weather, week, schedule = finded_params[0]
                 weather = weather == 'да' if True else False;
                 week = week == 'да' if True else False;
                 schedule = schedule == 'да' if True else False;
-                res = set_spam_options(chat_id, weather, week, schedule)
+                res = set_spam_options(int(chat_id) + 2000000000, weather, week, schedule)
                 if res:
                     send_msg(vk_api, peer_id, "Рассылка настроена")
             else:
                 send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
         elif 'расписание' in event.message['text']:
-            finded_params = re.findall(r'.* (\d{10})', event.message['text'])
+            finded_params = re.findall(r'.* (\d+)', event.message['text'])
             if finded_params:
                 chat_id = finded_params[0]
             if event.message.attachments != []:
@@ -193,29 +193,29 @@ def parse_settings_msg(event, peer_id):
                 response = requests.get(url)
                 decoded_data = response.content.decode('utf-8')  # декодируем байтовую строку в строку
                 schedule_data = json.loads(decoded_data)  # декодируем строку в формат JSON
-                res = set_schedule(chat_id, schedule_data)
+                res = set_schedule(int(chat_id) + 2000000000, schedule_data)
                 if res:
-                    send_msg(vk_api, peer_id, "Расписание установлено")
+                    send_msg(vk_api, peer_id, "Расписание настроено")
             else:
                 send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
     elif request in ['добавить']:
         if 'курс' in words_message:
-            finded_params = re.findall(r'.* (\d{10}) (.+) (.+) (.+)', event.message['text']) # Нужно сделать регулярку лучше
+            finded_params = re.findall(r'.* (\d+) (.+) (.+) (.+)', event.message['text']) # Нужно сделать регулярку лучше
             if finded_params:
                 chat_id, title, link, password = finded_params[0]
-                res = create_new_course(chat_id, title, link, password)
+                res = create_new_course(int(chat_id) + 2000000000, title, link, password)
                 if res:
-                    send_msg(vk_api, peer_id, "Ваш курс добавлен")
+                    send_msg(vk_api, peer_id, f'Ваш курс "{title}" добавлен')
             else:
                 send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
 
         elif 'ссылку' in words_message:
-            finded_params = re.findall(r'.* (\d{10}) (.+) (.+) (.+)', event.message['text']) # Нужно сделать регулярку лучше
+            finded_params = re.findall(r'.* (\d+) (.+) (.+) (.+)', event.message['text']) # Нужно сделать регулярку лучше
             if finded_params:
                 chat_id, title, link, password = finded_params[0]
-                res = create_new_link(chat_id, title, link, password)
+                res = create_new_link(int(chat_id) + 2000000000, title, link, password)
                 if res:
-                    send_msg(vk_api, peer_id, "Ваша ссылка на видеоконференцию добавлена")
+                    send_msg(vk_api, peer_id, f'Ваша ссылка на видеоконференцию {title} добавлена')
             else:
                 send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
     elif request in ['задать']:
