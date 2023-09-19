@@ -1,5 +1,5 @@
-from .create_new_course import create_new_course
-from .create_new_link import create_new_link
+from .create_new_course import create_new_course, delete_course
+from .create_new_link import create_new_link, delete_link
 from .get_courses import get_courses
 from .get_zoom_links import get_zoom_links
 from .help_faq import help_faq
@@ -19,4 +19,5 @@ from .set_time_delta import set_time_delta
 from .set_town import set_town
 from .set_spam_options import set_spam_options
 from .set_schedule import set_schedule
-from .create_new_event import create_new_event
+from .create_new_event import create_new_event, delete_event
+from .get_events import get_events

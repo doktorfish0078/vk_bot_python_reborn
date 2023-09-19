@@ -1,115 +1,148 @@
 {
-	 "Понедельник": [],
-	 "Вторник": [
-		 {
-			 "num_pair": "4",
-			 "week_type": "над",
-			 "lesson_type": "Лекция",
-			 "lesson_name": "Защита информации",
-			 "teacher": "Стулакина Е.Ф.",
-			 "room": "3-7"
-		 },
-		 {
+	 "Понедельник": [
+	 	{
 			 "num_pair": "5",
 			 "week_type": "оба",
-			 "lesson_type": "Л/р",
-			 "lesson_name": "Программирование мобильных приложений",
-			 "teacher": "Исупов Н.С.",
-			 "room": "3-603а"
+			 "lesson_type": "Практика",
+			 "lesson_name": "Ин. яз. дел. и проф. общ",
+			 "teacher": "Ошанова Е.С.",
+			 "room": "7-428"
+		 }
+	 ],
+	 "Вторник": [
+		 {
+			 "num_pair": "6",
+			 "week_type": "над",
+			 "lesson_type": "Лекция",
+			 "lesson_name": "Статистические и вероятностные методы",
+			 "teacher": "Вологодин С.В.",
+			 "room": "3-2"
 		 },
 		 {
 			 "num_pair": "6",
-			 "week_type": "оба",
+			 "week_type": "под",
+			 "lesson_type": "Практика",
+			 "lesson_name": "Параллельные выч. системы",
+			 "teacher": "Петухов К.Ю.",
+			 "room": "2-121"
+		 },
+		 {
+			 "num_pair": "7",
+			 "week_type": "над",
+			 "lesson_type": "Лекция",
+			 "lesson_name": "Филосовские проблемы в науке и тех.",
+			 "teacher": "Петрова М.В",
+			 "room": "3-6"
+		 },
+		 {
+			 "num_pair": "7",
+			 "week_type": "под",
 			 "lesson_type": "Л/р",
-			 "lesson_name": "Программирование мобильных приложений",
-			 "teacher": "Исупов Н.С.",
-			 "room": "3-603а"
+			 "lesson_name": "Параллельные вычислительные системы",
+			 "teacher": "Петухов К.Ю.",
+			 "room": "2-121"
 		 }
 	 ],
 	 "Среда": [
 		 {
-			 "num_pair": "2",
-			 "week_type": "оба",
-			 "lesson_type": "Лекция",
-			 "lesson_name": "Проектирование АСОиУ",
-			 "teacher": "Соболева Н.В.",
-			 "room": "3-8"
-		 },
-		 {
-			 "num_pair": "3",
-			 "week_type": "оба",
-			 "lesson_type": "Лекция",
-			 "lesson_name": "Программирование мобильных приложений",
-			 "teacher": "Исупов Н.С.",
-			 "room": "3-2"
-		 },
-		 {
-			 "num_pair": "4",
-			 "week_type": "над",
-			 "lesson_type": "Практика",
-			 "lesson_name": "НИР",
-			 "teacher": "Телегина М.В.",
-			 "room": "3-609"
-		 },
-		 {
-			 "num_pair": "4",
-			 "week_type": "под",
-			 "lesson_type": "Л/р",
-			 "lesson_name": "Защита информации",
-			 "teacher": "Стулакина Е.Ф.",
-			 "room": "7-518"
-		 },
-		 {
 			 "num_pair": "5",
 			 "week_type": "под",
 			 "lesson_type": "Л/р",
-			 "lesson_name": "Защита информации",
-			 "teacher": "Стулакина Е.Ф.",
-			 "room": "7-518"
+			 "lesson_name": "Статистические методы",
+			 "teacher": "Вологодин С.В.",
+			 "room": "6-403"
+		 },
+		 {
+			 "num_pair": "5",
+			 "week_type": "над",
+			 "lesson_type": "Практика",
+			 "lesson_name": "Статистические методы",
+			 "teacher": "Вологодин С.В.",
+			 "room": "6-403"
+		 },
+		 {
+			 "num_pair": "6",
+			 "week_type": "оба",
+			 "lesson_type": "Практика",
+			 "lesson_name": "Ин. яз. дел. и проф. общ.",
+			 "teacher": "Архипова Е.И.",
+			 "room": "7-413"
+		 },
+		 {
+			 "num_pair": "7",
+			 "week_type": "над",
+			 "lesson_type": "Лекция",
+			 "lesson_name": "Комм. тех. межкультурного взаим. и саморазвития",
+			 "teacher": "Ерохин А.В.",
+			 "room": "7-438"
+		 },
+		 {
+			 "num_pair": "7",
+			 "week_type": "под",
+			 "lesson_type": "Лекция",
+			  "lesson_name": "Параллельные вычислительные системы",
+			 "teacher": "Петухов К.Ю.",
+			 "room": "2-122а"
 		 }
 	 ],
 	 "Четверг": [
 		 {
-			 "num_pair": "1",
-			 "week_type": "оба",
-			 "lesson_type": "Л/р",
-			 "lesson_name": "Проектирование АСОиУ",
-			 "teacher": "Соболева Н.В.",
-			 "room": "3-603а"
+			 "num_pair": "6",
+			 "week_type": "над",
+			 "lesson_type": "Лекция",
+			 "lesson_name": "Неклассические логики",
+			 "teacher": "Брычкина М.С.",
+			 "room": "3-714"
 		 },
 		 {
-			 "num_pair": "2",
-			 "week_type": "оба",
-			 "lesson_type": "Л/р",
-			 "lesson_name": "Проектирование АСОиУ",
-			 "teacher": "Соболева Н.В.",
-			 "room": "3-603а"
+			 "num_pair": "6",
+			 "week_type": "под",
+			 "lesson_type": "Лекция",
+			 "lesson_name": "Искуственные нейрон. сети",
+			 "teacher": "Брычкина М.С.",
+			 "room": "3-12"
 		 },
 		 {
-			 "num_pair": "3",
-			 "week_type": "оба",
+			 "num_pair": "7",
+			 "week_type": "под",
+			 "lesson_type": "Л/р",
+			 "lesson_name": "Искуственные нейрон. сети",
+			 "teacher": "Брычкина М.С.",
+			 "room": "3-12"
+		 },
+		 {
+			 "num_pair": "7",
+			 "week_type": "над",
 			 "lesson_type": "Практика",
-			 "lesson_name": "Защита информации",
-			 "teacher": "Стулакина Е.Ф.",
-			 "room": "7-518"
+			 "lesson_name": "Неклассические логики",
+			 "teacher": "Брычкина М.С.",
+			 "room": "3-714"
 		 }
 	 ],
 	 "Пятница": [
 		 {
-			 "num_pair": "4",
-			 "week_type": "оба",
-			 "lesson_type": "Практика",
-			 "lesson_name": "Проектирование АСОиУ",
-			 "teacher": "Соболева Н.В.",
-			 "room": "3-603"
-		 },
-		 {
 			 "num_pair": "5",
 			 "week_type": "оба",
 			 "lesson_type": "Практика",
-			 "lesson_name": "Программирование мобильных приложений",
-			 "teacher": "Исупов Н.С.",
-			 "room": "3-609а"
+			 "lesson_name": "Комм. тех. межкультурного взаим. и саморазвития",
+			 "teacher": "Ерохин А.В.",
+			 "room": "7-423"
+		 },
+		 {
+			 "num_pair": "6",
+			 "week_type": "оба",
+			 "lesson_type": "Практика",
+			 "lesson_name": "Вероятностные методы",
+			 "teacher": "Вологодин С.В.",
+			 "room": "6-401"
+		 },
+		 {
+			 "num_pair": "7",
+			 "week_type": "оба",
+			 "lesson_type": "Практика",
+			 "lesson_name": "Филосовские проблемы в науке и тех.",
+			 "teacher": "Петрова М.В",
+			 "room": "3-3"
 		 }
 	 ]
  }

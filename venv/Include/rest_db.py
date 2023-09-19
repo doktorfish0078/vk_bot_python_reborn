@@ -292,6 +292,6 @@ init_app()
 # update_link("2000000005", "-NNqHsFDdlRHbXr1_UpN", "Научная исследовательская работа", "https://ee.istu.ru/course/view.php?id=5807", "НИР_АСОИУ")
 #
 # get_all_chats()
-# print(get_all_chats_id())
+# print(get_all_links(2000000007))
 
 # add_event("2000000007", "21.05.2023", "15:00", "КАЛЛ")

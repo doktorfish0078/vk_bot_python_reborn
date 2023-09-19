@@ -7,8 +7,8 @@ import traceback
 import requests
 import json
 
-from Include.commands import create_new_course
-from Include.commands import create_new_link
+from Include.commands import create_new_course, delete_course
+from Include.commands import create_new_link, delete_link
 from Include.commands import get_courses
 from Include.commands import get_zoom_links
 from Include.commands import help_faq
@@ -28,7 +28,8 @@ from Include.commands import set_time_delta
 from Include.commands import set_town
 from Include.commands import set_spam_options
 from Include.commands import set_schedule
-from Include.commands import create_new_event
+from Include.commands import create_new_event, delete_event
+from Include.commands import get_events
 
 from Include.helpers import regional_datetime
 from Include.helpers import send_msg
@@ -198,6 +199,7 @@ def parse_settings_msg(event, peer_id):
                     send_msg(vk_api, peer_id, "Расписание настроено")
             else:
                 send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
+
     elif request in ['добавить']:
         if 'курс' in words_message:
             finded_params = re.findall(r'.* (\d+) (.+) (.+) (.+)', event.message['text']) # Нужно сделать регулярку лучше
@@ -218,6 +220,60 @@ def parse_settings_msg(event, peer_id):
                     send_msg(vk_api, peer_id, f'Ваша ссылка на видеоконференцию {title} добавлена')
             else:
                 send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
+    elif request in ['удалить']:
+        if 'курс' in words_message:
+            finded_params = re.findall(r'.* (\d+) (\d+)', event.message['text'])
+            if finded_params:
+                chat_id, index_course = finded_params[0]
+                res = delete_course(int(chat_id) + 2000000000, int(index_course) - 1)
+                if res:
+                    send_msg(vk_api, peer_id, f'Ваш курс удалён')
+            else:
+                send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
+        elif 'ссылку' in words_message:
+            finded_params = re.findall(r'.* (\d+) (\d+)', event.message['text'])
+            if finded_params:
+                chat_id, index_link = finded_params[0]
+                res = delete_link(int(chat_id) + 2000000000, int(index_link) - 1)
+                if res:
+                    send_msg(vk_api, peer_id, f'Ваша ссылка удалёна')
+            else:
+                send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
+        elif 'мероприятие' in words_message:
+            finded_params = re.findall(r'.* (\d+) (\d+)', event.message['text'])
+            if finded_params:
+                chat_id, index_event = finded_params[0]
+                res = delete_event(int(chat_id) + 2000000000, int(index_event) - 1)
+                if res:
+                    send_msg(vk_api, peer_id, f'Ваше мероприятие удалёно')
+            else:
+                send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
+
+    elif request in ['список']:
+        if 'курсов' in words_message:
+            finded_params = re.findall(r'.* (\d+)', event.message['text'])
+            if finded_params:
+                chat_id = finded_params[0]
+                send_msg(vk_api, peer_id, get_courses(int(chat_id) + 2000000000, enumerate_list=True))
+            else:
+                send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
+
+        elif 'ссылок' in words_message:
+            finded_params = re.findall(r'.* (\d+)', event.message['text'])
+            if finded_params:
+                chat_id = finded_params[0]
+                send_msg(vk_api, peer_id, get_zoom_links(int(chat_id) + 2000000000, enumerate_list=True))
+            else:
+                send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
+        elif 'мероприятий' in words_message:
+            finded_params = re.findall(r'.* (\d+)', event.message['text'])
+            if finded_params:
+                chat_id = finded_params[0]
+                send_msg(vk_api, peer_id, get_events(int(chat_id) + 2000000000, enumerate_list=True))
+            else:
+                send_msg(vk_api, peer_id, "Извините,вы где-то ошиблись")
+
+
     elif request in ['задать']:
         if 'неделю' in words_message:
             pass
