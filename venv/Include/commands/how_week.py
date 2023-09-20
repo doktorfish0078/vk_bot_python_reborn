@@ -20,4 +20,4 @@ def how_week(tomorrow = False, boolean = False):
         return int(num_week) % 2 == 0
         #up line
     
-    return '👇Неделя под чертой👇' if ((int)(num_week) % 2 == 0) else '☝Неделя над чертой☝'
+    return '👇Неделя под чертой👇' if ((int)(num_week) % 2 != 0) else '☝Неделя над чертой☝'

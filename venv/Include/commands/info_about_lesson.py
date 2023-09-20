@@ -39,7 +39,7 @@ def info_about_lessons(peer_id, tomorrow=None, any_day=None):
     weekday = WEEKDAYS[num_day]
     week_type = 'под' if how_week(tomorrow=tomorrow, boolean=True) else 'над'
 
-    schedule_on_day = rest_db.get_pairs_on_day(peer_id, weekday, week_type)
+    schedule_on_day = get_pairs_on_day(peer_id, weekday, week_type)
 
     if num_day >= 0 and num_day <= 4:
         if type(schedule_on_day) == list:
