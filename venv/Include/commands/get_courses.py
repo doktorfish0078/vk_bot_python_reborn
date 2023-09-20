@@ -1,4 +1,4 @@
-import Include.rest_db as rest_db
+from rest_db import get_all_courses
 
 def get_courses(peer_id, enumerate_list=False):
     """

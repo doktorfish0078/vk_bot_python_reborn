@@ -2,14 +2,11 @@ import os
 import sys
 import datetime
 
-from Include.commands.how_week import how_week
-from Include.commands.info_about_lesson import info_about_lessons
-from Include.commands.weather import weather
+from commands.how_week import how_week
+from commands.info_about_lesson import info_about_lessons
+from commands.weather import weather
 
-from Include.helpers import regional_datetime
-
-import Include.rest_db as rest_db
-
+from helpers import regional_datetime
 
 def info_for_the_day(peer_id, tomorrow = False, spam_options=None):
     izhevsk_utc_date = regional_datetime(4)

@@ -1,6 +1,6 @@
-from Include.helpers import print_report
-from Include.helpers import send_msg_touser
-from Include.helpers import trying_decorator
+from helpers import print_report
+from helpers import send_msg_touser
+from helpers import trying_decorator
 
 def settings_session(vk_api, peer_id, user_sender_id):
     if not check_user_for_admin_rights(vk_api, peer_id, user_sender_id):

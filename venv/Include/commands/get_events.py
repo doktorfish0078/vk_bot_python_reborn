@@ -1,4 +1,4 @@
-import Include.rest_db as rest_db
+from rest_db import get_all_events
 
 def get_events(peer_id, enumerate_list=False):
     events = rest_db.get_all_events(peer_id)

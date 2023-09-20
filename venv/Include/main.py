@@ -7,33 +7,44 @@ import traceback
 import requests
 import json
 
-from Include.commands import create_new_course, delete_course
-from Include.commands import create_new_link, delete_link
-from Include.commands import get_courses
-from Include.commands import get_zoom_links
-from Include.commands import help_faq
-from Include.commands import how_week
-from Include.commands import info_about_lessons
-from Include.commands import info_for_the_day
-from Include.commands import new_invite
-from Include.commands import get_byte_screen_schedule_bus
-from Include.commands import weather
-from Include.commands import get_top
-from Include.commands import get_attachment
-from Include.commands import skirmish
-from Include.commands import punish
-from Include.commands import couple
-from Include.commands import settings_session
-from Include.commands import set_time_delta
-from Include.commands import set_town
-from Include.commands import set_spam_options
-from Include.commands import set_schedule
-from Include.commands import create_new_event, delete_event
-from Include.commands import get_events
 
-from Include.helpers import regional_datetime
-from Include.helpers import send_msg
-from Include.helpers import print_report
+# Получаем путь к текущей директории
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Формируем путь к папке 'Include'
+include_path = os.path.join(current_dir)
+
+# Добавляем путь к папке 'Include' в sys.path
+sys.path.append(include_path)
+
+
+from commands import create_new_course, delete_course
+from commands import create_new_link, delete_link
+from commands import get_courses
+from commands import get_zoom_links
+from commands import help_faq
+from commands import how_week
+from commands import info_about_lessons
+from commands import info_for_the_day
+from commands import new_invite
+from commands import get_byte_screen_schedule_bus
+from commands import weather
+from commands import get_top
+from commands import get_attachment
+from commands import skirmish
+from commands import punish
+from commands import couple
+from commands import settings_session
+from commands import set_time_delta
+from commands import set_town
+from commands import set_spam_options
+from commands import set_schedule
+from commands import create_new_event, delete_event
+from commands import get_events
+
+from helpers import regional_datetime
+from helpers import send_msg
+from helpers import print_report
 
 from vk_api import VkApi
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType

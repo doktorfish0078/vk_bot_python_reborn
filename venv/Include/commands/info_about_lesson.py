@@ -1,7 +1,7 @@
 import datetime
-import Include.rest_db as rest_db
-from Include.helpers import regional_datetime
-from Include.commands import how_week
+from rest_db import get_pairs_on_day
+from helpers import regional_datetime
+from commands import how_week
 
 
 lesson_type = {

@@ -1,6 +1,5 @@
 import random
 
-
 def skirmish(vk_api, event, words_message, gm=False):
     if len(words_message) >= 2:
         try:

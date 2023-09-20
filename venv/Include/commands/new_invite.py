@@ -1,6 +1,6 @@
-from Include.helpers import send_msg
-from Include.commands import help_faq
-import Include.rest_db as rest_db
+from helpers import send_msg
+from commands import help_faq
+from rest_db import get_all_chats_id, create_new_chat
 
 def new_invite(vk_api, peer_id):
     """
@@ -14,7 +14,7 @@ def new_invite(vk_api, peer_id):
 
     send_msg(vk_api, peer_id, "Всех приветствую, рад познакомиться!")
     send_msg(vk_api, peer_id, help_faq())
-    all_chats_ids = rest_db.get_all_chats_id()
+    all_chats_ids = get_all_chats_id()
     if peer_id not in all_chats_ids:
-        rest_db.create_new_chat(peer_id)
+        create_new_chat(peer_id)
         send_msg(vk_api, peer_id, "Чтобы я мог полноценно функционировать в вашей беседе, пожалуйста, выдайте мне права администратора беседы")

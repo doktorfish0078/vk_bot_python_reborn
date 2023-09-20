@@ -1,4 +1,4 @@
-from Include.helpers.regional_datetime import regional_datetime
+from helpers.regional_datetime import regional_datetime
 
 def print_report(report, traceback=None, delta_hours = 4):
     if traceback:

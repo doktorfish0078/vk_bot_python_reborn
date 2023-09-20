@@ -1,7 +1,7 @@
 import traceback
 import time
 
-from Include.helpers.server_notification import print_report
+from helpers.server_notification import print_report
 
 
 def trying_decorator(func): # стоит перенести куда-то отдельно как инструмент

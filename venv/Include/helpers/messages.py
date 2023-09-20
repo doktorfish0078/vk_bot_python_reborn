@@ -1,7 +1,7 @@
 from random import randint
 import time
 
-from Include.helpers.server_notification import print_report
+from helpers.server_notification import print_report
 
 def send_msg(vk_api, peer_id, message=None, attachment=None):
     """
