@@ -298,7 +298,7 @@ def wait_time():
         curr_time = izh_date.strftime('%H:%M')
         for peer_id in ids_chats:
             spam_options = rest_db.get_spam_options(peer_id)
-            if spam_options and peer_id=="2000000007":
+            if spam_options:
                 if spam_options['schedule'] or spam_options['week'] or spam_options['weather']:
                     if curr_time == '8:00':
                         res = send_msg(vk_api, peer_id, info_for_the_day(peer_id, spam_options=spam_options))
