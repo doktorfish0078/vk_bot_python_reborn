@@ -37,7 +37,7 @@ def info_about_lessons(peer_id, tomorrow=None, any_day=None):
     num_day = (int)(izhevsk_utc_date.weekday())
 
     weekday = WEEKDAYS[num_day]
-    week_type = 'под' if how_week(tomorrow=tomorrow, boolean=True) else 'над'
+    week_type = 'над' if how_week(tomorrow=tomorrow, boolean=True) else 'под'
 
     schedule_on_day = get_pairs_on_day(peer_id, weekday, week_type)
 

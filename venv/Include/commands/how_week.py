@@ -3,7 +3,7 @@ import datetime
 from helpers import regional_datetime
 
 
-#even - under / odd - over line
+#чётн - над / нечётн - под
 def how_week(tomorrow = False, boolean = False):
     """
 
@@ -12,12 +12,19 @@ def how_week(tomorrow = False, boolean = False):
     :return: текст с описанием какая неделя
     """
     izhevsk_utc_date = regional_datetime(4)
+
+
     if tomorrow:
         izhevsk_utc_date += datetime.timedelta(days=1)
     num_week = izhevsk_utc_date.strftime('%W')
 
     if boolean:
         return int(num_week) % 2 == 0
-        #up line
-    
-    return '👇Неделя под чертой👇' if ((int)(num_week) % 2 != 0) else '☝Неделя над чертой☝'
+
+
+    if ((int)(num_week) % 2 != 0):
+        #Если нечётная
+        return '👇Неделя под чертой👇'
+    else:
+        # Если чётная
+        return '☝Неделя над чертой☝'
