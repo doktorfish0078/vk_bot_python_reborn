@@ -300,7 +300,7 @@ def wait_time():
             spam_options = rest_db.get_spam_options(peer_id)
             if spam_options:
                 if spam_options['schedule'] or spam_options['week'] or spam_options['weather']:
-                    if curr_time == '8:00':
+                    if curr_time == '08:00':
                         res = send_msg(vk_api, peer_id, info_for_the_day(peer_id, spam_options=spam_options))
                         if res:
                             print_report(f"Сообщение отправлено в чат {peer_id}")
